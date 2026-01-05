@@ -9,6 +9,7 @@ type OriginalPriceProps = {
   price: number;
   discountPercentage: number;
 };
+
 export const OriginalPrice = ({ price, discountPercentage }: OriginalPriceProps) => {
   const num = price / (1 - discountPercentage / 100);
   const result = num.toFixed(2);
