@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { loginDataSlice } from '@/redux';
+import { loginDataSlice } from '@/app/store';
 
 const Wrapper = styled.div`
   display: inline-block;

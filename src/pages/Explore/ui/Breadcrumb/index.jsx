@@ -5,7 +5,7 @@ import * as S from '@/pages/Explore/ui/Breadcrumb/Breadcrumb.styled';
 import { DumText } from '@/shared/assets/styled/skeleton';
 import { Arrow24pxSVG } from '@/shared/assets/SVGicons';
 import { useFetch } from '@/shared/hooks';
-import { ToUpper } from '@/shared/lib';
+import { kebabToTitleCase } from '@/shared/lib';
 
 const Breadcrumb = () => {
   const params = useParams();
@@ -30,7 +30,7 @@ const Breadcrumb = () => {
           <S.Menu to="/Explore">Products</S.Menu>
           <S.Arrow>{Arrow24pxSVG({ size: '24', color: '#a4a4a4' })}</S.Arrow>
           <S.ProductAllMenu to="/Explore" params={params.id}>
-            {ToUpper(productId)}
+            {kebabToTitleCase(productId)}
           </S.ProductAllMenu>
 
           {params.id && (

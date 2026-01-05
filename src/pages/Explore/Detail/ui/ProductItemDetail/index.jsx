@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import * as S from '@/pages/Explore/Detail/ui/ProductItemDetail/ProductItemDetail.styled';
 import { DumImg, DumText } from '@/shared/assets/styled/skeleton';
 import { useFetch } from '@/shared/hooks';
-import { OriginalPrice } from '@/shared/lib';
+import { calculateOriginalPrice } from '@/shared/lib';
 
 const ProductItemDetail = () => {
   const params = useParams();
@@ -66,7 +66,7 @@ const ProductItemDetail = () => {
                   ) : (
                     <>
                       ${' '}
-                      {OriginalPrice({
+                      {calculateOriginalPrice({
                         price: ItemData.price,
                         discountPercentage: ItemData.discountPercentage,
                       })}

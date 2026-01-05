@@ -3,12 +3,12 @@ import { useSelector } from 'react-redux';
 import { Route, Routes } from 'react-router-dom';
 
 import Layout from '@/pages/Layout';
+import { CategoryHighlight, CategoryPromoBanner, HeroBanner, SeasonalSaleBanner } from '@/pages/ui';
+import ProductGrid from '@/shared/ui/ProductGrid';
 const Explore = lazy(() => import('@/pages/Explore'));
 const SearchProducts = lazy(() => import('@/pages/SearchProducts'));
 const SelectUser = lazy(() => import('@/pages/SelectUser'));
 const MyPage = lazy(() => import('@/pages/Mypage'));
-import { HeroBanner, CategoryHighlight, CategoryPromoBanner, SeasonalSaleBanner } from '@/pages/ui';
-import ProductGrid from '@/shared/ui/ProductGrid';
 const ProductDetail = lazy(() => import('@/pages/Explore/Detail'));
 
 const AppRouter = () => {

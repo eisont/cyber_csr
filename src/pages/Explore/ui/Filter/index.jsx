@@ -2,12 +2,12 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
+import { productIdSlice } from '@/app/store';
 import * as S from '@/pages/Explore/ui/Filter/Filter.styled';
-import { productIdSlice } from '@/redux';
 import { DumText } from '@/shared/assets/styled/skeleton';
 import { ExpandDownSVG } from '@/shared/assets/SVGicons';
 import { useFetch } from '@/shared/hooks';
-import { ToUpper } from '@/shared/lib';
+import { kebabToTitleCase } from '@/shared/lib';
 
 const Filter = () => {
   const productId = useSelector((state) => state.productId);
@@ -56,10 +56,10 @@ const Filter = () => {
                   <S.BrandInBox key={Number(new Date()) + el}>
                     <S.Brand
                       onClick={() => handleItemSelect(el, '/Explore')}
-                      productId={ToUpper(productId)}
-                      name={ToUpper(el)}
+                      productId={kebabToTitleCase(productId)}
+                      name={kebabToTitleCase(el)}
                     >
-                      {ToUpper(el)}
+                      {kebabToTitleCase(el)}
                     </S.Brand>
                   </S.BrandInBox>
                 ))}

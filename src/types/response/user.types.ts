@@ -1,4 +1,4 @@
-import { RootState } from '@/redux';
+import { RootState } from '@/app/store';
 import { Gender } from '@/types/response';
 
 type LoginDataState = RootState['loginData'];

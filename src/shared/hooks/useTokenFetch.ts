@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useEffect } from 'react';
 
-import { userTokenSlice } from '@/redux';
+import { userTokenSlice } from '@/app/store';
 import { useAppDispatch } from '@/shared/hooks/useAppDispatch';
 
 export type TokenRequestBody = {

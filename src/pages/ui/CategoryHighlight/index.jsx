@@ -1,7 +1,7 @@
 import { useDispatch } from 'react-redux';
 
+import { productIdSlice } from '@/app/store';
 import * as S from '@/pages/ui/CategoryHighlight/CategoryHighlight.styled';
-import { productIdSlice } from '@/redux';
 import {
   BaseballOutlineSVG,
   CarSportsOutlineSVG,

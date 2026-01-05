@@ -2,11 +2,11 @@ import { memo, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-import { productIdSlice } from '@/redux';
+import { productIdSlice } from '@/app/store';
 import { DumImg, DumText } from '@/shared/assets/styled/skeleton';
 import { AddToCartSVG, EmptyCartSVG } from '@/shared/assets/SVGicons';
 import { useIntersectionObserver } from '@/shared/hooks';
-import { OriginalPrice } from '@/shared/lib';
+import { calculateOriginalPrice } from '@/shared/lib';
 import * as S from '@/shared/ui/ProductItem/ProductItem.styled';
 
 const ProductItem = memo((pr) => {
@@ -56,7 +56,11 @@ const ProductItem = memo((pr) => {
             <S.Title>{pr?.title}</S.Title>
             <S.PriceBox>
               <S.Price>
-                ${OriginalPrice({ price: pr?.price, discountPercentage: pr?.discountPercentage })}
+                $
+                {calculateOriginalPrice({
+                  price: pr?.price,
+                  discountPercentage: pr?.discountPercentage,
+                })}
               </S.Price>
               <S.DiscountPercent>{pr?.discountPercentage}%</S.DiscountPercent>
             </S.PriceBox>

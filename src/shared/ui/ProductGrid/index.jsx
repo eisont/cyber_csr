@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from 'react-redux';
 
-import { productIdSlice } from '@/redux';
+import { productIdSlice } from '@/app/store';
 import { useFetch } from '@/shared/hooks';
-import { ToUpper } from '@/shared/lib';
+import { kebabToTitleCase } from '@/shared/lib';
 import * as S from '@/shared/ui/ProductGrid/ProductGrid.styled';
 import ProductItem from '@/shared/ui/ProductItem';
 
@@ -43,7 +43,7 @@ const ProductGrid = () => {
                   productId={productId}
                   onClick={() => dispatch(productIdSlice.actions.getProductId(el))}
                 >
-                  {ToUpper(el)}
+                  {kebabToTitleCase(el)}
                 </S.Explore>
               ))}
             </S.CategoryBox>

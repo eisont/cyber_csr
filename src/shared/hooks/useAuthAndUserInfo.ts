@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { userInfoSlice } from '@/redux';
+import { userInfoSlice } from '@/app/store';
 import { useAppSelector, useTokenFetch, useUserInfoFetch } from '@/shared/hooks';
 import { useAppDispatch } from '@/shared/hooks/useAppDispatch';
 import { UserInfoResponse } from '@/types/response';
