@@ -15,8 +15,6 @@ const useAuthAndUserInfo = () => {
     if (!userInfo) return;
     dispatch(userInfoSlice.actions.setUserInfo(userInfo));
   }, [userInfo, dispatch]);
-
-  return null;
 };
 
 export { useAuthAndUserInfo };
