@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useEffect } from 'react';
 
 import { userTokenSlice } from '@/app/store';
-import { useAppDispatch } from '@/shared/hooks/useAppDispatch';
+import useAppDispatch from '@/shared/hooks/useAppDispatch';
 
 export type TokenRequestBody = {
   username: string;
@@ -17,7 +17,8 @@ type UseTokenFetchProps = {
   body: TokenRequestBody;
   enabled?: boolean;
 };
-export const useTokenFetch = ({ query, body, enabled = true }: UseTokenFetchProps) => {
+
+const useTokenFetch = ({ query, body, enabled = true }: UseTokenFetchProps) => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -34,3 +35,5 @@ export const useTokenFetch = ({ query, body, enabled = true }: UseTokenFetchProp
     fetchData();
   }, [body, query, dispatch, enabled]);
 };
+
+export default useTokenFetch;

@@ -9,7 +9,7 @@ type UseFetchProps = {
   enabled?: boolean;
 };
 
-export const useFetch = <TData = unknown>({
+const useFetch = <TData = unknown>({
   resource,
   path = '',
   endPoint = [],
@@ -45,3 +45,5 @@ export const useFetch = <TData = unknown>({
 
   return [data, isLoading];
 };
+
+export default useFetch;

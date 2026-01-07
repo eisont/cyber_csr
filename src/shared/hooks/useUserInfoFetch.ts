@@ -7,7 +7,7 @@ type UseUserInfoFetchProps = {
   enabled?: boolean;
 };
 
-export const useUserInfoFetch = <TData = unknown>({
+const useUserInfoFetch = <TData = unknown>({
   enabled = true,
 }: UseUserInfoFetchProps): readonly [TData | null, boolean] => {
   const accessToken = useAppSelector((s) => s.userToken.accessToken);
@@ -39,3 +39,5 @@ export const useUserInfoFetch = <TData = unknown>({
 
   return [userInfo, isLoading] as const;
 };
+
+export default useUserInfoFetch;

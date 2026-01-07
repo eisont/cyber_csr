@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 
 import { userInfoSlice } from '@/app/store';
 import { useAppSelector, useTokenFetch, useUserInfoFetch } from '@/shared/hooks';
-import { useAppDispatch } from '@/shared/hooks/useAppDispatch';
+import useAppDispatch from '@/shared/hooks/useAppDispatch';
 import { UserInfoResponse } from '@/types/response';
 
 const useAuthAndUserInfo = () => {
@@ -17,4 +17,4 @@ const useAuthAndUserInfo = () => {
   }, [userInfo, dispatch]);
 };
 
-export { useAuthAndUserInfo };
+export default useAuthAndUserInfo;

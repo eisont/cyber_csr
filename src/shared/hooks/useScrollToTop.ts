@@ -11,4 +11,4 @@ const useScrollToTop = () => {
   return null;
 };
 
-export { useScrollToTop };
+export default useScrollToTop;

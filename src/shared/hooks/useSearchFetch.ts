@@ -6,7 +6,7 @@ type UseSearchFetchProps = {
   enabled?: boolean;
 };
 
-export const useSearchFetch = <TData = unknown>({
+const useSearchFetch = <TData = unknown>({
   searchData,
   enabled = true,
 }: UseSearchFetchProps): [TData | null, boolean] => {
@@ -42,3 +42,5 @@ export const useSearchFetch = <TData = unknown>({
 
   return [data, isLoading];
 };
+
+export default useSearchFetch;
