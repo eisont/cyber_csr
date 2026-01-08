@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { ReactNode } from 'react';
 
 import { BREAKPOINTS } from '@/shared/assets/styled/breakPoints';
 import { Footer, Header } from '@/shared/layout';
@@ -15,7 +16,11 @@ const Wrapper = styled.div`
   }
 `;
 
-const Layout = ({ children }) => {
+type LayoutProps = {
+  children: ReactNode;
+};
+
+const Layout = ({ children }: LayoutProps) => {
   return (
     <Wrapper>
       <Header />
