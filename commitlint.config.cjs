@@ -1,6 +1,7 @@
 module.exports = {
   extends: ['@commitlint/config-conventional'],
   rules: {
+    'subject-case': [0],
     // 사용할 type만 허용 (type은 영어 소문자로 유지)
     'type-enum': [
       2,
