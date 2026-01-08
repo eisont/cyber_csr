@@ -9,7 +9,7 @@ export default [
     ignores: ['dist', 'node_modules', 'coverage'],
   },
   {
-    files: ['src/**/*.{ts,tsx,js,jsx}'],
+    files: ['src/**/*.{ts,tsx}'],
     languageOptions: {
       ecmaVersion: 'latest',
       sourceType: 'module',
@@ -34,11 +34,11 @@ export default [
       },
       'import/resolver': {
         node: {
-          extensions: ['.js', '.jsx', '.ts', '.tsx'],
+          extensions: ['.ts', '.tsx'],
         },
         alias: {
           map: [['@', './src']],
-          extensions: ['.js', '.jsx', '.ts', '.tsx'],
+          extensions: ['.ts', '.tsx'],
         },
       },
     },

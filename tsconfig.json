@@ -9,7 +9,7 @@
     "skipLibCheck": true,
 
     /* --- JS/TS 설정 --- */
-    "allowJs": true,
+    "allowJs": false,
     "checkJs": false,
     "resolveJsonModule": true,
     "isolatedModules": true,
@@ -32,9 +32,9 @@
     "forceConsistentCasingInFileNames": true,
 
     /* --- 절대 경로(alias) --- */
-    "baseUrl": "./src",
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["*"]
+      "@/*": ["src/*"]
     },
 
     /* --- Vite 타입 --- */
