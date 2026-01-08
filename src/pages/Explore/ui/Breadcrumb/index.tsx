@@ -18,7 +18,7 @@ const Breadcrumb = () => {
     resource: 'products',
     endPoint: [Number(params.id)],
     query: { select: 'title' },
-    enabled: true,
+    enabled: Boolean(params.id),
   });
 
   return (

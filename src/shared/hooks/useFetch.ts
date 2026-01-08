@@ -38,6 +38,7 @@ const useFetch = <TData = unknown>({
       setIsLoading(false);
     }
   }, [url]);
+
   useEffect(() => {
     if (!enabled) return;
     fetchData();
