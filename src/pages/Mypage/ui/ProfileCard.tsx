@@ -1,6 +1,13 @@
 import * as S from '@/pages/Mypage/MyPage.styled';
+import { UserResponse } from '@/types/response/user.types';
 
-const ProfileCard = ({ user, setToggle }) => {
+type ProfileCardType = {
+  user: Partial<UserResponse> | null;
+  setToggle: (b: boolean) => void;
+};
+
+const ProfileCard = ({ user, setToggle }: ProfileCardType) => {
+  if (!user) return;
   return (
     <S.Card>
       <S.Stack>

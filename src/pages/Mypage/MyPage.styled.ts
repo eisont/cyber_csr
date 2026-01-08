@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-import { Link } from 'react-router-dom';
 
 export const Wrapper = styled.div`
   max-width: 1080px;
@@ -76,7 +75,7 @@ export const NavButtons = styled.div`
   margin-top: 16px;
 `;
 
-export const Button = styled(Link)`
+export const Button = styled.div`
   padding: 8px 16px;
   border-radius: 6px;
   background: #007bff;

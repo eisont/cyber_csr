@@ -1,24 +1,25 @@
 import * as S from '@/pages/Mypage/MyPage.styled';
+import { UserResponse } from '@/types/response';
 
-const SystemCard = ({ user }) => {
+const SystemCard = ({ ip, macAddress, ssn, userAgent }: Partial<UserResponse>) => {
   return (
     <S.Card>
       <S.Title>시스템 정보</S.Title>
       <S.Row>
         <S.Label>IP</S.Label>
-        <S.Value>{user.ip}</S.Value>
+        <S.Value>{ip}</S.Value>
       </S.Row>
       <S.Row>
         <S.Label>MAC</S.Label>
-        <S.Value>{user.macAddress}</S.Value>
+        <S.Value>{macAddress}</S.Value>
       </S.Row>
       <S.Row>
         <S.Label>SSN</S.Label>
-        <S.Value>{user.ssn}</S.Value>
+        <S.Value>{ssn}</S.Value>
       </S.Row>
       <S.Row>
         <S.Label>UserAgent</S.Label>
-        <S.Value>{user.userAgent}</S.Value>
+        <S.Value>{userAgent}</S.Value>
       </S.Row>
     </S.Card>
   );

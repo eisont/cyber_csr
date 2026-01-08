@@ -1,31 +1,40 @@
 import * as S from '@/pages/Mypage/MyPage.styled';
+import { UserResponse } from '@/types/response';
 
-const PersonalCard = ({ user }) => {
+const PersonalCard = ({
+  email,
+  phone,
+  birthDate,
+  eyeColor,
+  hair,
+  height,
+  weight,
+}: Partial<UserResponse>) => {
   return (
     <S.Card>
       <S.Title>개인 정보</S.Title>
       <S.Row>
         <S.Label>이메일</S.Label>
-        <S.Value>{user.email}</S.Value>
+        <S.Value>{email}</S.Value>
       </S.Row>
       <S.Row>
         <S.Label>전화</S.Label>
-        <S.Value>{user.phone}</S.Value>
+        <S.Value>{phone}</S.Value>
       </S.Row>
       <S.Row>
         <S.Label>생년월일</S.Label>
-        <S.Value>{user.birthDate}</S.Value>
+        <S.Value>{birthDate}</S.Value>
       </S.Row>
       <S.Row>
         <S.Label>눈/머리</S.Label>
         <S.Value>
-          {user.eyeColor} · {user.hair?.color}/{user.hair?.type}
+          {eyeColor} · {hair?.color}/{hair?.type}
         </S.Value>
       </S.Row>
       <S.Row>
         <S.Label>키/몸무게</S.Label>
         <S.Value>
-          {user.height}cm · {user.weight}kg
+          {height}cm · {weight}kg
         </S.Value>
       </S.Row>
     </S.Card>

@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 
 import * as S from '@/pages/Mypage/MyPage.styled';
 import { useFetch } from '@/shared/hooks';
+import { ProductsType } from '@/types/response/cart.types';
 
 const ItemRow = styled.div`
   display: grid;
@@ -41,29 +42,32 @@ const Summary = styled.div`
 `;
 
 const CartCard = () => {
-  const [{ products: ItemData }] = useFetch({ resource: 'cart', path: 9, enabled: true });
+  const [ProductItem] = useFetch<ProductsType[]>({ resource: 'cart', path: '9', enabled: true });
 
-  const totalQty = ItemData?.reduce((sum, it) => sum + (it.qty ?? 1), 0);
-  const totalPrice = ItemData?.reduce((sum, it) => sum + (it.price ?? 0) * (it.qty ?? 1), 0);
+  const totalQty = ProductItem?.reduce((sum, it) => sum + (it.quantity ?? 1), 0);
+  const totalPrice = ProductItem?.reduce(
+    (sum, it) => sum + (it.price ?? 0) * (it.quantity ?? 1),
+    0,
+  );
 
   return (
     <S.Card>
       <S.Title>장바구니</S.Title>
 
-      {ItemData?.length === 0 ? (
+      {ProductItem?.length === 0 ? (
         <div>장바구니가 비어 있어요.</div>
       ) : (
         <>
-          {ItemData?.map((it) => (
+          {ProductItem?.map((it) => (
             <ItemRow key={it.id}>
               <Thumb src={it.thumbnail} alt={it.title} />
               <div>
                 <Title>{it.title}</Title>
                 <div style={{ color: '#888', fontSize: 12 }}>
-                  수량 {it.qty ?? 1} · 개당 ${it.price?.toLocaleString?.() ?? it.price}
+                  수량 {it.quantity ?? 1} · 개당 ${it.price?.toLocaleString?.() ?? it.price}
                 </div>
               </div>
-              <Price>${((it.price ?? 0) * (it.qty ?? 1))?.toLocaleString()}</Price>
+              <Price>${((it.price ?? 0) * (it.quantity ?? 1))?.toLocaleString()}</Price>
             </ItemRow>
           ))}
 

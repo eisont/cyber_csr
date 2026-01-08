@@ -5,7 +5,7 @@ type HairType = {
   type: string;
 };
 type CoordinatesType = { lat: number; lng: string };
-type AddressType = {
+export type AddressType = {
   address: string;
   city: string;
   state: string;
@@ -21,7 +21,7 @@ type BankType = {
   currency: string;
   iban: string;
 };
-type CompanyType = {
+export type CompanyType = {
   department: string;
   name: string;
   title: string;
@@ -64,7 +64,7 @@ export type UserResponse = {
   role: string;
 };
 
-export type UserInfoResponse = {
+export type UserLoginResponse = {
   id: number;
   username: string;
   email: string;
