@@ -56,7 +56,7 @@ const Filter = () => {
                 {ProductsCategoryListData?.map((el) => (
                   <S.BrandInBox key={Number(new Date()) + el}>
                     <S.Brand
-                      onClick={() => handleItemSelect(el, '/Explore')}
+                      onClick={() => handleItemSelect(el, '/explore')}
                       productId={kebabToTitleCase(productId)}
                       name={kebabToTitleCase(el)}
                     >

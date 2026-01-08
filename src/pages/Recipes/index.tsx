@@ -4,16 +4,17 @@ import * as S from '@/pages/Recipes/Recipes.styled';
 import Modal from '@/pages/Recipes/ui/Modal';
 import RecipesItem from '@/pages/Recipes/ui/RecipesItem';
 import { useFetch } from '@/shared/hooks';
-import { RecipeType } from '@/types/response/recipe.types';
+import { RecipesType } from '@/types/response/recipe.types';
 
 const Recipes = () => {
   const [selectId, setSelectId] = useState<number | null>();
 
-  const [RecipesData] = useFetch<RecipeType[]>({
+  const [data] = useFetch<RecipesType>({
     resource: 'recipes',
     query: { limit: 50 },
     enabled: true,
   });
+  const RecipesData = data?.recipes ?? [];
 
   const selectedRecipe = selectId ? (RecipesData?.find((el) => el.id === selectId) ?? null) : null;
 

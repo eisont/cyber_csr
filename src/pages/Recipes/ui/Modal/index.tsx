@@ -2,9 +2,9 @@ import { memo } from 'react';
 
 import * as S from '@/pages/Recipes/ui/RecipesItem/RecipesItem.styled';
 import { CloseSVG } from '@/shared/assets/SVGicons';
-import { RecipeType } from '@/types/response/recipe.types';
+import { RecipeItem } from '@/types/response/recipe.types';
 
-type ModalType = { data: Partial<RecipeType>; onClose: () => void };
+type ModalType = { data: Partial<RecipeItem>; onClose: () => void };
 
 const Modal = memo((pr: ModalType) => {
   return (

@@ -20,7 +20,7 @@ const Header = () => {
             {LogoSVG({ width: '54', height: '18', color: '#000' })}
           </S.MobileIcon>
 
-          {pathname === '/products' && (
+          {pathname === '/search' && (
             <S.InputBox>
               <S.SearchIcon>
                 <S.NoLinkIcon>{SearchSVG({ size: '24', color: '#989898' })}</S.NoLinkIcon>
