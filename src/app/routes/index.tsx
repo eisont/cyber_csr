@@ -17,7 +17,7 @@ const AppRoutes = () => {
 
   return (
     <Layout>
-      <Suspense fallback={<>loading...</>}>
+      <Suspense fallback={'loading...'}>
         <Routes>
           <Route
             path="/"

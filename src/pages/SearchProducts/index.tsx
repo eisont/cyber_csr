@@ -1,9 +1,11 @@
 import styled from '@emotion/styled';
 import { useSelector } from 'react-redux';
 
+import { RootState } from '@/app/store';
 import { DumBox } from '@/shared/assets/styled/skeleton';
 import { useSearchFetch } from '@/shared/hooks';
 import ProductItem from '@/shared/ui/ProductItem';
+import { ProductItemResponse, ProductResponse } from '@/types/response';
 
 const Wrapper = styled.div`
   display: flex;
@@ -26,16 +28,19 @@ export const MainBox = styled.div`
 `;
 
 const SearchProducts = () => {
-  const searchData = useSelector((state) => state.setSearchData);
-  const [data, ProductListsLoading] = useSearchFetch({ searchData, enabled: true });
-  const ProductListData = data.products;
+  const searchData = useSelector((state: RootState) => state.search);
+  const [data, ProductListsLoading] = useSearchFetch<ProductResponse>({
+    searchData,
+    enabled: true,
+  });
+  const ProductListData = data?.products ?? [];
 
   return (
     <Wrapper>
       <MainBox>
         {ProductListData?.length && !ProductListsLoading ? (
           <>
-            {ProductListData?.map((el) => (
+            {ProductListData?.map((el: ProductItemResponse) => (
               <ProductItem key={el.id} {...el} isLoading={ProductListsLoading} />
             ))}
           </>

@@ -16,6 +16,13 @@ type ProductItemMeta = {
   qrCode: string;
 };
 
+export type ProductResponse = {
+  products: ProductItemResponse[];
+  total: number;
+  skip: number;
+  limit: number;
+};
+
 export type ProductItemResponse = {
   id: number;
   title: string;
