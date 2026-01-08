@@ -17,18 +17,16 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version-file: .nvmrc
           cache: npm
 
       - run: node -v && npm -v
 
-      - name: Debug lockfile presence
+      - name: Debug yaml requirements in lock
         run: |
-          pwd
-          ls -la
-          test -f package-lock.json && echo "package-lock.json exists" || (echo "package-lock.json missing" && exit 1)
-          git status --porcelain
-          head -n 40 package.json
+          node -e "const fs=require('fs'); const lock=JSON.parse(fs.readFileSync('package-lock.json','utf8')); const pkgs=lock.packages||{}; const fields=['dependencies','optionalDependencies','peerDependencies','devDependencies']; const users=[]; let yaml=pkgs['node_modules/yaml']; console.log('yaml in lock:', yaml && yaml.version); for (const [p,m] of Object.entries(pkgs)) { for (const f of fields) { const d=(m&&m[f])||{}; if (d.yaml) users.push({pkg:p, field:f, range:d.yaml}); } } console.log('yaml users:', users.length); console.log(users);"
+          grep -n "\"yaml\": \"2.8.2\"" package-lock.json || true
+          grep -n "yaml@2.8.2" package-lock.json || true
 
       - name: Install dependencies
         run: npm ci
