@@ -57,7 +57,7 @@ const CategoryHighlight = () => {
             </S.ItemBox>
             <S.ItemBox
               to="/explore"
-              onClick={() => dispatch(productIdSlice.actions.getProductId('womans-dresses'))}
+              onClick={() => dispatch(productIdSlice.actions.getProductId('womens-dresses'))}
             >
               <S.CategoryImg>{WomanOutlineSVG({ size: '48', color: '#000' })}</S.CategoryImg>
               <S.Title>Womens Dresses</S.Title>
