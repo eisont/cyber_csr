@@ -20,6 +20,16 @@ jobs:
           node-version: 22
           cache: npm
 
+      - run: node -v && npm -v
+
+      - name: Debug lockfile presence
+        run: |
+          pwd
+          ls -la
+          test -f package-lock.json && echo "package-lock.json exists" || (echo "package-lock.json missing" && exit 1)
+          git status --porcelain
+          head -n 40 package.json
+
       - name: Install dependencies
         run: npm ci
 
