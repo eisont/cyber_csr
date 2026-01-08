@@ -42,3 +42,14 @@ export type ProductItemResponse = {
 };
 
 export type CategoryListResponse = string[];
+
+export type GetMonkCategoryPromoItemsResponse = {
+  id: number;
+  img: string;
+  alt: string;
+  hover: string;
+  background: string;
+  color: string;
+  text: string;
+  button: string;
+};

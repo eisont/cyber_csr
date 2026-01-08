@@ -1,13 +1,19 @@
 import styled from '@emotion/styled';
 
 import { FlexCenter, FlexColBetween } from '@/shared/assets/styled/CommonStyled';
+import { GetMonkCategoryPromoItemsResponse } from '@/types/response';
+
+type Props = {
+  background?: string;
+  hover?: string;
+};
 
 const Wrapper = styled(FlexCenter)`
   width: 360px;
   height: 552px;
   cursor: default;
 
-  background: ${({ background }) => background};
+  background: ${({ background }: Props) => background};
 `;
 
 const MainBox = styled(FlexColBetween)`
@@ -32,7 +38,7 @@ const ItemBt = styled.button`
   border-radius: 6px;
   border: 1px solid ${({ color }) => color};
   color: ${({ color }) => color};
-  background: ${({ background }) => background};
+  background: ${({ background }: Props) => background};
 
   &:hover {
     cursor: pointer;
@@ -40,18 +46,24 @@ const ItemBt = styled.button`
   }
 `;
 
-const CategoryPromoBannerItem = (pr) => {
+type CategoryPromoBannerItemProps = Partial<GetMonkCategoryPromoItemsResponse>;
+
+const CategoryPromoBannerItem = ({
+  img,
+  alt,
+  hover,
+  background,
+  color,
+  text,
+  button,
+}: CategoryPromoBannerItemProps) => {
   return (
-    <Wrapper background={pr.ItemData.background}>
+    <Wrapper background={background}>
       <MainBox>
-        <ItemImg src={`img/CategoryPromoBanner/${pr.ItemData.img}`} alt={pr.ItemData.alt} />
-        <ItemText color={pr.ItemData.color}>{pr.ItemData.text}</ItemText>
-        <ItemBt
-          color={pr.ItemData.color}
-          background={pr.ItemData.background}
-          hover={pr.ItemData.hover}
-        >
-          {pr.ItemData.button}
+        <ItemImg src={`img/CategoryPromoBanner/${img}`} alt={alt} />
+        <ItemText color={color}>{text}</ItemText>
+        <ItemBt color={color} background={background} hover={hover}>
+          {button}
         </ItemBt>
       </MainBox>
     </Wrapper>
