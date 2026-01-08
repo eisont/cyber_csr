@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
 import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
 
 import { loginDataSlice } from '@/app/store';
+import { UsersResponse } from '@/types/response';
 
 const Wrapper = styled.div`
   display: inline-block;
@@ -16,7 +16,7 @@ const Img = styled.img`
   width: 150px;
   height: 150px;
 `;
-const HiddenBox = styled(Link)`
+const HiddenBox = styled.div`
   width: 150px;
   height: 150px;
   border-radius: 10%;
@@ -36,25 +36,23 @@ const HiddenBox = styled(Link)`
   text-decoration: none;
 `;
 
-const UserCard = (pr) => {
+const UserCard = ({ image, username, password }: Partial<UsersResponse>) => {
   const dispatch = useDispatch();
+  const handleSelectorUser = () => {
+    dispatch(
+      loginDataSlice.actions.setLoginData({
+        username: username,
+        password: password,
+        expiresInMins: 30,
+      }),
+    );
+  };
 
   return (
     <Wrapper>
-      <Img src={pr.user.image} />
-      <HiddenBox
-        onClick={() =>
-          dispatch(
-            loginDataSlice.actions.setLoginData({
-              username: pr.user.username,
-              password: pr.user.password,
-              expiresInMins: 30,
-            }),
-          )
-        }
-        className="hiddenBox"
-      >
-        {pr.user.username}
+      <Img src={image} />
+      <HiddenBox onClick={() => handleSelectorUser()} className="hiddenBox">
+        {username}
       </HiddenBox>
     </Wrapper>
   );
