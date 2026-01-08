@@ -8,7 +8,7 @@ import Filter from '@/pages/Explore/ui/Filter';
 import ProductsBox from '@/pages/Explore/ui/ProductsBox';
 import Recipes from '@/pages/Recipes';
 import { useFetch } from '@/shared/hooks';
-import { ProductItemResponse } from '@/types/response';
+import { ProductResponse } from '@/types/response';
 import { RecipeType } from '@/types/response/recipe.types';
 
 const Explore = () => {
@@ -16,13 +16,14 @@ const Explore = () => {
   const location = useLocation();
   const productId = useSelector((state: RootState) => state.productId);
 
-  const [ProductListData] = useFetch<ProductItemResponse[]>({
+  const [data] = useFetch<ProductResponse>({
     resource: 'products',
     path: 'category',
     endPoint: [productId || 'beauty'],
     query: { select: 'id' },
     enabled: true,
   });
+  const ProductListData = data?.products ?? [];
 
   const [RecipesData] = useFetch<RecipeType[]>({
     resource: 'recipes',

@@ -4,17 +4,18 @@ import { RootState } from '@/app/store';
 import * as S from '@/pages/Explore/ui/ProductsBox/ProductsBox.styled';
 import { useFetch } from '@/shared/hooks';
 import ProductItem from '@/shared/ui/ProductItem';
-import { ProductItemResponse } from '@/types/response';
+import { ProductResponse } from '@/types/response';
 
 const ProductsBox = () => {
   const productId = useSelector((state: RootState) => state.productId);
 
-  const [ProductListData, isLoading] = useFetch<ProductItemResponse[]>({
+  const [data, isLoading] = useFetch<ProductResponse>({
     resource: 'products',
     path: 'category',
     endPoint: [productId || 'beauty'],
     enabled: true,
   });
+  const ProductListData = data?.products ?? [];
 
   return (
     <S.Wrapper>

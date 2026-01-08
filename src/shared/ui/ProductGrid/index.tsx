@@ -5,7 +5,7 @@ import { useFetch } from '@/shared/hooks';
 import { kebabToTitleCase } from '@/shared/lib';
 import * as S from '@/shared/ui/ProductGrid/ProductGrid.styled';
 import ProductItem from '@/shared/ui/ProductItem';
-import { CategoryListResponse, ProductItemResponse } from '@/types/response';
+import { CategoryListResponse, ProductResponse } from '@/types/response';
 
 const ProductGrid = () => {
   const productId = useSelector((state: RootState) => state.productId);
@@ -15,11 +15,12 @@ const ProductGrid = () => {
     path: 'category-list',
     enabled: true,
   });
-  const [ProductListData, ProductListsLoading] = useFetch<ProductItemResponse[]>({
+  const [data, ProductListsLoading] = useFetch<ProductResponse>({
     resource: 'products',
     endPoint: ['category', productId],
     enabled: true,
   });
+  const ProductListData = data?.products ?? [];
 
   const dispatch = useDispatch();
 
