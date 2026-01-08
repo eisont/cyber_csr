@@ -1,19 +1,22 @@
-export type ProductsListResponse = {
-  products: ProductsDetailResponse[];
-  total: number;
-  skip: number;
-  limit: number;
+type ProductItemDimensions = {
+  width: number;
+  height: number;
+  depth: number;
 };
-
-type ProductsDetailReview = {
+type ProductItemReviews = {
   rating: number;
   comment: string;
   date: string;
   reviewerName: string;
   reviewerEmail: string;
 };
+type ProductItemMeta = {
+  createdAt: string;
+  updatedAt: string;
+  qrCode: string;
+};
 
-export type ProductsDetailResponse = {
+export type ProductItemResponse = {
   id: number;
   title: string;
   description: string;
@@ -26,59 +29,16 @@ export type ProductsDetailResponse = {
   brand: string;
   sku: string;
   weight: number;
-  dimensions: {
-    width: number;
-    height: number;
-    depth: number;
-  };
+  dimensions: ProductItemDimensions;
   warrantyInformation: string;
   shippingInformation: string;
   availabilityStatus: string;
-  reviews: ProductsDetailReview[];
+  reviews: ProductItemReviews[];
   returnPolicy: string;
   minimumOrderQuantity: number;
-  meta: {
-    createdAt: string;
-    updatedAt: string;
-    barcode: string;
-    qrCode: string;
-  };
+  meta: ProductItemMeta;
   thumbnail: string;
   images: string[];
 };
 
-// ======================
-
-type ProductsCategoryProductsResponse = {
-  id: number;
-  title: string;
-  category: string;
-};
-
-export type ProductsCategoryResponse = {
-  products: ProductsCategoryProductsResponse[];
-  total: number;
-  skip: number;
-  limit: number;
-};
-
-// ======================
-export type ProductsCategoryListResponse = string[];
-
-// ======================
-export type ProductsCatagoriesItemResponse = {
-  slug: string;
-  name: string;
-  url: string;
-};
-
-type ProductsCatagoriesResponse = ProductsCatagoriesItemResponse[];
-
-// ======================
-
-export type ProductSearchResponse = {
-  products: ProductsCategoryProductsResponse[];
-  total: number;
-  skip: number;
-  limit: number;
-};
+export type CategoryListResponse = string[];
