@@ -2,12 +2,17 @@ import { memo } from 'react';
 
 import * as S from '@/pages/Recipes/ui/RecipesItem/RecipesItem.styled';
 import { useIntersectionObserver } from '@/shared/hooks';
+import { RecipeType } from '@/types/response/recipe.types';
 
-const RecipesItem = memo((pr) => {
+type RecipesItemType = Partial<RecipeType> & {
+  setSelectId: (e: number) => void;
+};
+
+const RecipesItem = memo((pr: RecipesItemType) => {
   const { ref } = useIntersectionObserver();
 
   return (
-    <S.Wrapper onClick={() => pr.setSelectId(pr.id)}>
+    <S.Wrapper onClick={() => pr.setSelectId(Number(pr.id))}>
       <S.MainBox>
         <S.Img ref={ref} data-src={pr?.image} src={pr?.image} alt="image" />
         <S.RBox>
