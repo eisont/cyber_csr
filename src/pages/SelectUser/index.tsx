@@ -1,10 +1,10 @@
 import * as S from '@/pages/SelectUser/SelectUser.styled';
 import UserCard from '@/pages/SelectUser/ui/UserCard';
 import { useFetch } from '@/shared/hooks';
-import { UsersResponse } from '@/types/response/user.types';
+import { UserResponse } from '@/types/response/user.types';
 
 const SelectUser = () => {
-  const [usersData] = useFetch<UsersResponse[]>({ resource: 'users', enabled: true });
+  const [usersData] = useFetch<UserResponse[]>({ resource: 'users', enabled: true });
 
   return (
     <S.Wrapper>

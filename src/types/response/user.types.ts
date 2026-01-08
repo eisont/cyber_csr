@@ -33,7 +33,7 @@ type CryptoType = {
   network: string;
 };
 
-export type UsersResponse = {
+export type UserResponse = {
   id: number;
   firstName: string;
   lastName: string;
