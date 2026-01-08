@@ -25,23 +25,26 @@ const Breadcrumb = () => {
     <S.Wrapper>
       <S.Menu to="/">Home</S.Menu>
       <S.Arrow>{Arrow24pxSVG({ size: '24', color: '#a4a4a4' })}</S.Arrow>
+
       {location.pathname === '/recipes' ? (
-        <S.ProductItemMenu params={'true'}>Recipes</S.ProductItemMenu>
+        <S.ProductItemMenu params>Recipes</S.ProductItemMenu>
       ) : (
         <>
           <S.Menu to="/explore">Products</S.Menu>
           <S.Arrow>{Arrow24pxSVG({ size: '24', color: '#a4a4a4' })}</S.Arrow>
-          <S.ProductAllMenu to="/explore" params={String(params.id)}>
+          <S.ProductAllMenu to="/explore" params={Boolean(params.id)}>
             {kebabToTitleCase(productId)}
           </S.ProductAllMenu>
 
-          {params.id && (
+          {Boolean(params.id) && (
             <>
               <S.Arrow>{Arrow24pxSVG({ size: '24', color: '#a4a4a4' })}</S.Arrow>
               {isLoading ? (
                 <DumText width="160px" height="10px" />
               ) : (
-                <S.ProductItemMenu params={params.id}>{ItemTitleData?.title}</S.ProductItemMenu>
+                <S.ProductItemMenu params={Boolean(params.id)}>
+                  {ItemTitleData?.title}
+                </S.ProductItemMenu>
               )}
             </>
           )}
