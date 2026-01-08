@@ -1,6 +1,6 @@
 export const GetMonkCategoryPromoItems = [
   {
-    id: '1',
+    id: 1,
     img: 'image65.webp',
     alt: 'clothes',
     hover: 'rgb(0, 0, 0, 0.05)',
@@ -10,7 +10,7 @@ export const GetMonkCategoryPromoItems = [
     button: 'Shop Now',
   },
   {
-    id: '2',
+    id: 2,
     img: 'image67.webp',
     alt: 'electronics',
     hover: 'rgb(0, 0, 0, 0.05)',
@@ -20,7 +20,7 @@ export const GetMonkCategoryPromoItems = [
     button: 'Shop Now',
   },
   {
-    id: '3',
+    id: 3,
     img: 'image68.webp',
     alt: 'furniture',
     hover: 'rgb(0, 0, 0, 0.05)',
@@ -30,7 +30,7 @@ export const GetMonkCategoryPromoItems = [
     button: 'Shop Now',
   },
   {
-    id: '4',
+    id: 4,
     img: 'image69.webp',
     alt: 'shoes',
     hover: 'rgb(255, 255, 255, 0.05)',

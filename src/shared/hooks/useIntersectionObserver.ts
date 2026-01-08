@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-export const useIntersectionObserver = () => {
+const useIntersectionObserver = () => {
   const imgRef = useRef(null);
 
   useEffect(() => {
@@ -24,3 +24,5 @@ export const useIntersectionObserver = () => {
 
   return { ref: imgRef };
 };
+
+export default useIntersectionObserver;
