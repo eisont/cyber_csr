@@ -2,9 +2,9 @@ import { memo } from 'react';
 
 import * as S from '@/pages/Recipes/ui/RecipesItem/RecipesItem.styled';
 import { useIntersectionObserver } from '@/shared/hooks';
-import { RecipeType } from '@/types/response/recipe.types';
+import { RecipeItem } from '@/types/response/recipe.types';
 
-type RecipesItemType = Partial<RecipeType> & {
+type RecipesItemType = Partial<RecipeItem> & {
   setSelectId: (e: number) => void;
 };
 
