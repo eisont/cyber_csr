@@ -3,6 +3,11 @@ import styled from '@emotion/styled';
 import { BREAKPOINTS } from '@/shared/assets/styled/breakPoints';
 import { FlexCenter, FlexColAround } from '@/shared/assets/styled/CommonStyled';
 
+type ExploreProps = {
+  id: string;
+  productId: string;
+};
+
 export const Wrapper = styled(FlexCenter)``;
 
 export const TotalBox = styled(FlexCenter)`
@@ -41,7 +46,7 @@ export const CategoryBox = styled.div`
     height: 40px;
   }
 `;
-export const Explore = styled.div`
+export const Explore = styled.div<ExploreProps>`
   margin: 0 20px 0 0;
   font-weight: 500;
   text-align: center;

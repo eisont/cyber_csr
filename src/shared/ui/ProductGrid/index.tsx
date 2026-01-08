@@ -1,20 +1,21 @@
 import { useDispatch, useSelector } from 'react-redux';
 
-import { productIdSlice } from '@/app/store';
+import { productIdSlice, RootState } from '@/app/store';
 import { useFetch } from '@/shared/hooks';
 import { kebabToTitleCase } from '@/shared/lib';
 import * as S from '@/shared/ui/ProductGrid/ProductGrid.styled';
 import ProductItem from '@/shared/ui/ProductItem';
+import { CategoryListResponse, ProductItemResponse } from '@/types/response';
 
 const ProductGrid = () => {
-  const productId = useSelector((state) => state.productId);
+  const productId = useSelector((state: RootState) => state.productId);
 
-  const [CategoryListData, isLoading] = useFetch({
+  const [CategoryListData, isLoading] = useFetch<CategoryListResponse>({
     resource: 'products',
     path: 'category-list',
     enabled: true,
   });
-  const [{ products: ProductListData }, ProductListsLoading] = useFetch({
+  const [ProductListData, ProductListsLoading] = useFetch<ProductItemResponse[]>({
     resource: 'products',
     endPoint: ['category', productId],
     enabled: true,

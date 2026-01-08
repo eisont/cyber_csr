@@ -8,14 +8,22 @@ import { AddToCartSVG, EmptyCartSVG } from '@/shared/assets/SVGicons';
 import { useIntersectionObserver } from '@/shared/hooks';
 import { calculateOriginalPrice } from '@/shared/lib';
 import * as S from '@/shared/ui/ProductItem/ProductItem.styled';
+import { ProductItemResponse } from '@/types/response';
 
-const ProductItem = memo((pr) => {
+type ProductItemProps = Partial<ProductItemResponse> & {
+  isLoading: boolean;
+};
+
+const ProductItem = memo((pr: ProductItemProps) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [toggle, setToggle] = useState(false);
   const { ref } = useIntersectionObserver();
 
-  const handleItemSelect = (productId, id) => {
+  const handleItemSelect = (
+    productId: ProductItemResponse['category'],
+    id: ProductItemResponse['id'],
+  ) => {
     dispatch(productIdSlice.actions.getProductId(productId));
     navigate(`/explore/${id}`);
   };
@@ -58,8 +66,8 @@ const ProductItem = memo((pr) => {
               <S.Price>
                 $
                 {calculateOriginalPrice({
-                  price: pr?.price,
-                  discountPercentage: pr?.discountPercentage,
+                  price: Number(pr.price),
+                  discountPercentage: Number(pr.discountPercentage),
                 })}
               </S.Price>
               <S.DiscountPercent>{pr?.discountPercentage}%</S.DiscountPercent>
@@ -68,7 +76,9 @@ const ProductItem = memo((pr) => {
           </>
         )}
 
-        <S.Button onClick={() => handleItemSelect(pr.category, pr.id)}>Detail</S.Button>
+        <S.Button onClick={() => handleItemSelect(String(pr.category), Number(pr.id))}>
+          Detail
+        </S.Button>
       </S.MainBox>
     </S.Wrapper>
   );
