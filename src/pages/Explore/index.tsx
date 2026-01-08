@@ -1,19 +1,22 @@
 import { useSelector } from 'react-redux';
 import { Outlet, useLocation, useParams } from 'react-router-dom';
 
+import { RootState } from '@/app/store';
 import * as S from '@/pages/Explore/Explore.styled';
 import Breadcrumb from '@/pages/Explore/ui/Breadcrumb';
 import Filter from '@/pages/Explore/ui/Filter';
 import ProductsBox from '@/pages/Explore/ui/ProductsBox';
 import Recipes from '@/pages/Recipes';
 import { useFetch } from '@/shared/hooks';
+import { ProductItemResponse } from '@/types/response';
+import { RecipeType } from '@/types/response/recipe.types';
 
 const Explore = () => {
   const params = useParams();
   const location = useLocation();
-  const productId = useSelector((state) => state.productId);
+  const productId = useSelector((state: RootState) => state.productId);
 
-  const [{ products: ProductListData }] = useFetch({
+  const [ProductListData] = useFetch<ProductItemResponse[]>({
     resource: 'products',
     path: 'category',
     endPoint: [productId || 'beauty'],
@@ -21,7 +24,7 @@ const Explore = () => {
     enabled: true,
   });
 
-  const [{ recipes: RecipesData }] = useFetch({
+  const [RecipesData] = useFetch<RecipeType[]>({
     resource: 'recipes',
     query: { limit: 50 },
     enabled: true,

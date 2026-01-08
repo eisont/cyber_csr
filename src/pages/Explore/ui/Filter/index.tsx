@@ -2,27 +2,28 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-import { productIdSlice } from '@/app/store';
+import { productIdSlice, RootState } from '@/app/store';
 import * as S from '@/pages/Explore/ui/Filter/Filter.styled';
 import { DumText } from '@/shared/assets/styled/skeleton';
 import { ExpandDownSVG } from '@/shared/assets/SVGicons';
 import { useFetch } from '@/shared/hooks';
 import { kebabToTitleCase } from '@/shared/lib';
+import { CategoryListResponse } from '@/types/response';
 
 const Filter = () => {
-  const productId = useSelector((state) => state.productId);
+  const productId = useSelector((state: RootState) => state.productId);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [toggle, setToggle] = useState(false);
 
-  const [ProductsCategoryListData, isLoading] = useFetch({
+  const [ProductsCategoryListData, isLoading] = useFetch<CategoryListResponse>({
     resource: 'products',
     path: 'category-list',
     enabled: true,
   });
 
-  const handleItemSelect = (id, type) => {
+  const handleItemSelect = (id: string, type: string) => {
     dispatch(productIdSlice.actions.getProductId(id));
     navigate(type);
   };
@@ -45,14 +46,14 @@ const Filter = () => {
                 {Array(20)
                   .fill('')
                   .map((_, i) => (
-                    <S.BrandInBox key={Number(new Date() * i)}>
+                    <S.BrandInBox key={Number(new Date()) * i}>
                       <DumText width="160px" height="15px" />
                     </S.BrandInBox>
                   ))}
               </>
             ) : (
               <>
-                {ProductsCategoryListData.map((el) => (
+                {ProductsCategoryListData?.map((el) => (
                   <S.BrandInBox key={Number(new Date()) + el}>
                     <S.Brand
                       onClick={() => handleItemSelect(el, '/Explore')}

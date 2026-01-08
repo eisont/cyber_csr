@@ -11,7 +11,7 @@ import * as S from '@/shared/ui/ProductItem/ProductItem.styled';
 import { ProductItemResponse } from '@/types/response';
 
 type ProductItemProps = Partial<ProductItemResponse> & {
-  isLoading: boolean;
+  isLoading?: boolean;
 };
 
 const ProductItem = memo((pr: ProductItemProps) => {

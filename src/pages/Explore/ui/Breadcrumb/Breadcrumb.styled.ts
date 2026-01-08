@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import { BREAKPOINTS } from '@/shared/assets/styled/breakPoints';
 import { FlexCenter } from '@/shared/assets/styled/CommonStyled';
 
+type ParamsType = { params: string };
+
 export const Wrapper = styled.div`
   width: 100%;
   height: 104px;
@@ -31,11 +33,19 @@ export const Arrow = styled(FlexCenter)`
   cursor: default;
 `;
 
-export const ProductItemMenu = styled(Menu)`
+export const ProductItemMenu = styled.div<ParamsType>`
+  margin: 0 20px 0 0;
+  text-decoration: none;
+
   color: ${(pr) => pr.params && '#000'};
   font-weight: 900;
+
+  &:hover {
+    cursor: pointer;
+    color: #000;
+  }
 `;
-export const ProductAllMenu = styled(Menu)`
+export const ProductAllMenu = styled(Menu)<ParamsType>`
   color: ${(pr) => !pr.params && '#000'};
   font-weight: ${(pr) => (pr.params ? '500' : '900')};
 `;
