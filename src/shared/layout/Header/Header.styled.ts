@@ -84,7 +84,28 @@ export const Icon = styled(Link)`
     display: none;
   }
 `;
+export const NoLinkIcon = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 0.1s;
+
+  &:hover {
+    scale: 1.2;
+    cursor: pointer;
+  }
+
+  @media (max-width: ${BREAKPOINTS.mobile}) {
+    display: none;
+  }
+`;
 export const MobileIcon = styled(Icon)`
+  display: none;
+  @media (max-width: ${BREAKPOINTS.mobile}) {
+    display: inline-block;
+  }
+`;
+export const NoLinkMobileIcon = styled(NoLinkIcon)`
   display: none;
   @media (max-width: ${BREAKPOINTS.mobile}) {
     display: inline-block;

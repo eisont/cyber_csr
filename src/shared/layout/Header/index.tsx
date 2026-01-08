@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
 
-import { searchSlice } from '@/app/store';
+import { RootState, searchSlice } from '@/app/store';
 import { BagSVG, CloseSVG, LogoSVG, MenuSVG, SearchSVG } from '@/shared/assets/SVGicons';
 import * as S from '@/shared/layout/Header/Header.styled';
 
@@ -9,7 +9,7 @@ const Header = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const pathname = location.pathname;
-  const userInfo = useSelector((state) => state.userInfo);
+  const userInfo = useSelector((state: RootState) => state.userInfo);
 
   return (
     <S.Wrapper>
@@ -23,7 +23,7 @@ const Header = () => {
           {pathname === '/products' && (
             <S.InputBox>
               <S.SearchIcon>
-                <S.Icon>{SearchSVG({ size: '24', color: '#989898' })}</S.Icon>
+                <S.NoLinkIcon>{SearchSVG({ size: '24', color: '#989898' })}</S.NoLinkIcon>
               </S.SearchIcon>
               <S.Input
                 placeholder="Search"
@@ -53,7 +53,7 @@ const Header = () => {
               </S.Icon>
             </>
           )}
-          <S.MobileIcon>{MenuSVG({ size: '20', color: '#191919' })}</S.MobileIcon>
+          <S.NoLinkMobileIcon>{MenuSVG({ size: '20', color: '#191919' })}</S.NoLinkMobileIcon>
         </S.IconBox>
       </S.TotalBox>
     </S.Wrapper>
