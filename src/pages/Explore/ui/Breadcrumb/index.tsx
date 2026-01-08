@@ -29,9 +29,9 @@ const Breadcrumb = () => {
         <S.ProductItemMenu params={'true'}>Recipes</S.ProductItemMenu>
       ) : (
         <>
-          <S.Menu to="/Explore">Products</S.Menu>
+          <S.Menu to="/explore">Products</S.Menu>
           <S.Arrow>{Arrow24pxSVG({ size: '24', color: '#a4a4a4' })}</S.Arrow>
-          <S.ProductAllMenu to="/Explore" params={String(params.id)}>
+          <S.ProductAllMenu to="/explore" params={String(params.id)}>
             {kebabToTitleCase(productId)}
           </S.ProductAllMenu>
 
