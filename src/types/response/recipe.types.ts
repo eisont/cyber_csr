@@ -1,4 +1,4 @@
-export type RecipeType = {
+type RecipeItem = {
   id: number;
   name: string;
   ingredients: string[];
@@ -15,4 +15,11 @@ export type RecipeType = {
   rating: number;
   reviewCount: number;
   mealType: string[];
+};
+
+export type RecipesType = {
+  recipes: RecipeItem[];
+  total: number;
+  skip: number;
+  limit: number;
 };

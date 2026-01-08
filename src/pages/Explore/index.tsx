@@ -9,27 +9,28 @@ import ProductsBox from '@/pages/Explore/ui/ProductsBox';
 import Recipes from '@/pages/Recipes';
 import { useFetch } from '@/shared/hooks';
 import { ProductResponse } from '@/types/response';
-import { RecipeType } from '@/types/response/recipe.types';
+import { RecipesType } from '@/types/response/recipe.types';
 
 const Explore = () => {
   const params = useParams();
   const location = useLocation();
   const productId = useSelector((state: RootState) => state.productId);
 
-  const [data] = useFetch<ProductResponse>({
+  const [productsData] = useFetch<ProductResponse>({
     resource: 'products',
     path: 'category',
     endPoint: [productId || 'beauty'],
     query: { select: 'id' },
     enabled: true,
   });
-  const ProductListData = data?.products ?? [];
+  const ProductListData = productsData?.products ?? [];
 
-  const [RecipesData] = useFetch<RecipeType[]>({
+  const [recipesData] = useFetch<RecipesType>({
     resource: 'recipes',
     query: { limit: 50 },
     enabled: true,
   });
+  const RecipesData = recipesData?.recipes ?? [];
 
   return (
     <S.Wrapper>
