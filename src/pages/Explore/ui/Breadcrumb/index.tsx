@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { useLocation, useParams } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 
 import { RootState } from '@/app/store';
 import * as S from '@/pages/Explore/ui/Breadcrumb/Breadcrumb.styled';
@@ -32,9 +32,11 @@ const Breadcrumb = () => {
         <>
           <S.Menu to="/explore">Products</S.Menu>
           <S.Arrow>{Arrow24pxSVG({ size: '24', color: '#a4a4a4' })}</S.Arrow>
-          <S.ProductAllMenu to="/explore" params={Boolean(params.id)}>
-            {kebabToTitleCase(productId)}
-          </S.ProductAllMenu>
+          <S.LinkSt to="/explore">
+            <S.ProductAllMenu params={Boolean(params.id)}>
+              {kebabToTitleCase(productId)}
+            </S.ProductAllMenu>
+          </S.LinkSt>
 
           {Boolean(params.id) && (
             <>
