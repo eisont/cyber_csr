@@ -1,7 +1,7 @@
 import * as S from '@/pages/Mypage/MyPage.styled';
-import { UserResponse } from '@/types/response';
+import { UserType } from '@/types/response';
 
-const FinanceCard = ({ bank, crypto }: Partial<UserResponse>) => {
+const FinanceCard = ({ bank, crypto }: Partial<UserType>) => {
   const mask = (num = '') => num.replace(/\d(?=\d{4})/g, '*');
   return (
     <S.Card>

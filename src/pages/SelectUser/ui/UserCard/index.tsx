@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { useDispatch } from 'react-redux';
 
 import { loginDataSlice } from '@/app/store';
-import { UserResponse } from '@/types/response';
+import { UserType } from '@/types/response';
 
 const Wrapper = styled.div`
   display: inline-block;
@@ -36,7 +36,7 @@ const HiddenBox = styled.div`
   text-decoration: none;
 `;
 
-const UserCard = ({ image, username, password }: Partial<UserResponse>) => {
+const UserCard = ({ image, username, password }: Partial<UserType>) => {
   const dispatch = useDispatch();
   const handleSelectorUser = () => {
     dispatch(

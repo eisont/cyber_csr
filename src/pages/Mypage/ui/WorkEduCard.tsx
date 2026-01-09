@@ -1,7 +1,7 @@
 import * as S from '@/pages/Mypage/MyPage.styled';
-import { UserResponse } from '@/types/response';
+import { UserType } from '@/types/response';
 
-const WorkEduCard = ({ company, university }: Partial<UserResponse>) => {
+const WorkEduCard = ({ company, university }: Partial<UserType>) => {
   return (
     <S.Card>
       <S.Title>직장 · 학력</S.Title>
