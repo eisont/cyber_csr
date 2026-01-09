@@ -1,7 +1,7 @@
 import * as S from '@/pages/Mypage/MyPage.styled';
-import { UserResponse } from '@/types/response';
+import { UserType } from '@/types/response';
 
-const SystemCard = ({ ip, macAddress, ssn, userAgent }: Partial<UserResponse>) => {
+const SystemCard = ({ ip, macAddress, ssn, userAgent }: Partial<UserType>) => {
   return (
     <S.Card>
       <S.Title>시스템 정보</S.Title>

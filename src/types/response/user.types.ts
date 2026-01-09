@@ -33,7 +33,7 @@ type CryptoType = {
   network: string;
 };
 
-export type UserResponse = {
+export type UserType = {
   id: number;
   firstName: string;
   lastName: string;
@@ -62,6 +62,13 @@ export type UserResponse = {
   userAgent: string;
   crypto: CryptoType;
   role: string;
+};
+
+export type UsersResponse = {
+  users: UserType[];
+  total: 208;
+  skip: 0;
+  limit: 30;
 };
 
 export type UserLoginResponse = {

@@ -3,14 +3,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import { productIdSlice, RootState } from '@/app/store';
-import * as S from '@/pages/Explore/ui/Filter/Filter.styled';
+import * as S from '@/pages/Explore/ui/CategorySidebar/CategorySidebar.styled';
 import { DumText } from '@/shared/assets/styled/skeleton';
 import { ExpandDownSVG } from '@/shared/assets/SVGicons';
 import { useFetch } from '@/shared/hooks';
 import { kebabToTitleCase } from '@/shared/lib';
 import { CategoryListResponse } from '@/types/response';
 
-const Filter = () => {
+const CategorySidebar = () => {
   const productId = useSelector((state: RootState) => state.productId);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -73,4 +73,4 @@ const Filter = () => {
   );
 };
 
-export default Filter;
+export default CategorySidebar;

@@ -45,7 +45,18 @@ export const ProductItemMenu = styled.div<ParamsType>`
     color: #000;
   }
 `;
-export const ProductAllMenu = styled(Menu)<ParamsType>`
+export const LinkSt = styled(Link)`
+  margin: 0 20px 0 0;
+  font-weight: 500;
+  text-decoration: none;
+`;
+export const ProductAllMenu = styled.div<ParamsType>`
+  color: #a4a4a4;
+
+  &:hover {
+    cursor: pointer;
+    color: #000;
+  }
   color: ${(pr) => !pr.params && '#000'};
   font-weight: ${(pr) => (pr.params ? 500 : 900)};
 `;

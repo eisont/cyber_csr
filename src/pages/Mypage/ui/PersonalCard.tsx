@@ -1,5 +1,5 @@
 import * as S from '@/pages/Mypage/MyPage.styled';
-import { UserResponse } from '@/types/response';
+import { UserType } from '@/types/response';
 
 const PersonalCard = ({
   email,
@@ -9,7 +9,7 @@ const PersonalCard = ({
   hair,
   height,
   weight,
-}: Partial<UserResponse>) => {
+}: Partial<UserType>) => {
   return (
     <S.Card>
       <S.Title>개인 정보</S.Title>

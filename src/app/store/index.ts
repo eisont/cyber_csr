@@ -1,7 +1,7 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { configureStore, createSlice } from '@reduxjs/toolkit';
 
-import { UserResponse } from '@/types/response';
+import { UserType } from '@/types/response';
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
@@ -60,14 +60,14 @@ export const userTokenSlice = createSlice({
   },
 });
 
-type UserInfoState = UserResponse | null;
+type UserInfoState = UserType | null;
 const initialUserInfoState: UserInfoState = null;
 
 export const userInfoSlice = createSlice({
   name: 'userInfo',
   initialState: initialUserInfoState as UserInfoState,
   reducers: {
-    setUserInfo: (_, action: PayloadAction<UserResponse>) => action.payload, // 전체 객체 교체
+    setUserInfo: (_, action: PayloadAction<UserType>) => action.payload, // 전체 객체 교체
     clearUserInfo: () => null,
   },
 });

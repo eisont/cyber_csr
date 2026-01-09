@@ -1,4 +1,4 @@
-export type ProductsType = {
+type ProductsType = {
   id: number;
   title: string;
   price: number;
@@ -9,7 +9,7 @@ export type ProductsType = {
   thumbnail: string;
 };
 
-type CartResponse = {
+export type CartResponse = {
   id: number;
   products: ProductsType[];
   total: number;

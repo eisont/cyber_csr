@@ -4,7 +4,7 @@ import { Outlet, useLocation, useParams } from 'react-router-dom';
 import { RootState } from '@/app/store';
 import * as S from '@/pages/Explore/Explore.styled';
 import Breadcrumb from '@/pages/Explore/ui/Breadcrumb';
-import Filter from '@/pages/Explore/ui/Filter';
+import CategorySidebar from '@/pages/Explore/ui/CategorySidebar';
 import ProductsBox from '@/pages/Explore/ui/ProductsBox';
 import Recipes from '@/pages/Recipes';
 import { useFetch } from '@/shared/hooks';
@@ -23,22 +23,24 @@ const Explore = () => {
     query: { select: 'id' },
     enabled: true,
   });
-  const ProductListData = productsData?.products ?? [];
+  const ProductListData = productsData?.products;
 
   const [recipesData] = useFetch<RecipesType>({
     resource: 'recipes',
     query: { limit: 50 },
     enabled: true,
   });
-  const RecipesData = recipesData?.recipes ?? [];
+  const RecipesData = recipesData?.recipes;
 
   return (
     <S.Wrapper>
       <S.MainBox>
         <Breadcrumb />
+
         {!params.id ? (
           <S.FlexBox>
-            <Filter />
+            <CategorySidebar />
+
             <S.FlexColBox>
               <S.ProductsCount>
                 Selected Products:{' '}
