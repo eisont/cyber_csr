@@ -59,15 +59,14 @@ export default [
       'import/order': [
         'warn',
         {
-          groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index', 'object'],
+          groups: ['external', 'internal', ['parent', 'sibling', 'index']],
           pathGroups: [
             {
               pattern: '@/**',
               group: 'internal',
-              position: 'before',
             },
           ],
-          'newlines-between': 'always',
+          'newlines-between': 'always-and-inside-groups',
           alphabetize: {
             order: 'asc',
             caseInsensitive: true,
