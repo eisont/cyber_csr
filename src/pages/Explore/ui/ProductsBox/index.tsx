@@ -2,18 +2,18 @@ import { useSelector } from 'react-redux';
 
 import { RootState } from '@/app/store';
 import * as S from '@/pages/Explore/ui/ProductsBox/ProductsBox.styled';
-import { useFetch } from '@/shared/hooks';
+import { SERVICE_URLS } from '@/shared/api/endpoints';
+import { QUERY_KEYS } from '@/shared/query/key';
+import { useFetchQuery } from '@/shared/query/useFetchQuery';
 import ProductItem from '@/shared/ui/ProductItem';
 import { ProductResponse } from '@/types/response';
 
 const ProductsBox = () => {
   const productId = useSelector((state: RootState) => state.productId);
 
-  const [data, isLoading] = useFetch<ProductResponse>({
-    resource: 'products',
-    path: 'category',
-    endPoint: [productId || 'beauty'],
-    enabled: true,
+  const { data, isLoading } = useFetchQuery<ProductResponse>({
+    queryKey: QUERY_KEYS.products.byCategory(productId),
+    url: SERVICE_URLS.PRODUCTS.BY_CATEGORY(productId),
   });
   const ProductListData = data?.products ?? [];
 

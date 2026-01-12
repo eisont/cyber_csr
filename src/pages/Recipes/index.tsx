@@ -3,16 +3,17 @@ import { useState } from 'react';
 import * as S from '@/pages/Recipes/Recipes.styled';
 import Modal from '@/pages/Recipes/ui/Modal';
 import RecipesItem from '@/pages/Recipes/ui/RecipesItem';
-import { useFetch } from '@/shared/hooks';
+import { SERVICE_URLS } from '@/shared/api/endpoints';
+import { QUERY_KEYS } from '@/shared/query/key';
+import { useFetchQuery } from '@/shared/query/useFetchQuery';
 import { RecipesType } from '@/types/response/recipe.types';
 
 const Recipes = () => {
   const [selectId, setSelectId] = useState<number | null>();
 
-  const [data] = useFetch<RecipesType>({
-    resource: 'recipes',
-    query: { limit: 50 },
-    enabled: true,
+  const { data } = useFetchQuery<RecipesType>({
+    queryKey: QUERY_KEYS.recipes.list,
+    url: SERVICE_URLS.RECIPES.LIST,
   });
   const RecipesData = data?.recipes ?? [];
 

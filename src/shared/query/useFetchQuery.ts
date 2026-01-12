@@ -1,7 +1,7 @@
 import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 
-import { axiosInstance } from '../api/axios';
+import { axiosInstance } from '@/shared/api/axios';
 
 type Params = Record<string, unknown>;
 
