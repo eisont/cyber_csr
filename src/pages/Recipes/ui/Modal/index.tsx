@@ -1,12 +1,10 @@
-import { memo } from 'react';
-
 import * as S from '@/pages/Recipes/ui/RecipesItem/RecipesItem.styled';
 import { CloseSVG } from '@/shared/assets/SVGicons';
 import { RecipeItem } from '@/types/response/recipe.types';
 
 type ModalType = { data: Partial<RecipeItem>; onClose: () => void };
 
-const Modal = memo((pr: ModalType) => {
+const Modal = (pr: ModalType) => {
   return (
     <S.Modal>
       <S.Icon onClick={() => pr.onClose()}>{CloseSVG({ size: '50px', color: '#000' })}</S.Icon>
@@ -31,6 +29,6 @@ const Modal = memo((pr: ModalType) => {
       </S.ListBox>
     </S.Modal>
   );
-});
+};
 
 export default Modal;

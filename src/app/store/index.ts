@@ -1,5 +1,4 @@
-import type { PayloadAction } from '@reduxjs/toolkit';
-import { configureStore, createSlice } from '@reduxjs/toolkit';
+import { configureStore, createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 import { UserType } from '@/types/response';
 

@@ -10,7 +10,7 @@ export type RecipeItem = {
   cuisine: string;
   caloriesPerServing: number;
   tags: string[];
-  userId: Number;
+  userId: number;
   image: string;
   rating: number;
   reviewCount: number;

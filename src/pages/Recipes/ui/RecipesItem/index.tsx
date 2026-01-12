@@ -1,5 +1,3 @@
-import { memo } from 'react';
-
 import * as S from '@/pages/Recipes/ui/RecipesItem/RecipesItem.styled';
 import { useIntersectionObserver } from '@/shared/hooks';
 import { RecipeItem } from '@/types/response/recipe.types';
@@ -8,7 +6,7 @@ type RecipesItemType = Partial<RecipeItem> & {
   setSelectId: (e: number) => void;
 };
 
-const RecipesItem = memo((pr: RecipesItemType) => {
+const RecipesItem = (pr: RecipesItemType) => {
   const { ref } = useIntersectionObserver();
 
   return (
@@ -28,6 +26,6 @@ const RecipesItem = memo((pr: RecipesItemType) => {
       </S.MainBox>
     </S.Wrapper>
   );
-});
+};
 
 export default RecipesItem;
