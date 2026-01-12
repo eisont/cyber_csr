@@ -7,7 +7,6 @@ export const SERVICE_URLS = {
   PRODUCTS: {
     LIST: '/products',
     DETAIL: (id: number) => `products/${id}`,
-    SEARCH: `/users/search`,
     CATEGORY_LIST: `/products/category-list`,
     BY_CATEGORY: (category: string) => `products/category/${category}`,
   },

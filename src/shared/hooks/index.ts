@@ -3,6 +3,5 @@ export { default as useAppSelector } from './useAppSelector';
 export { default as useAuthAndUserInfo } from './useAuthAndUserInfo';
 export { default as useIntersectionObserver } from './useIntersectionObserver';
 export { default as useScrollToTop } from './useScrollToTop';
-export { default as useSearchFetch } from './useSearchFetch';
 export { default as useTokenFetch } from './useTokenFetch';
 export { default as useUserInfoFetch } from './useUserInfoFetch';

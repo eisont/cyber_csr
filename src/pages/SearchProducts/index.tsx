@@ -2,8 +2,10 @@ import styled from '@emotion/styled';
 import { useSelector } from 'react-redux';
 
 import { RootState } from '@/app/store';
+import { SERVICE_URLS } from '@/shared/api/endpoints';
 import { DumBox } from '@/shared/assets/styled/skeleton';
-import { useSearchFetch } from '@/shared/hooks';
+import { QUERY_KEYS } from '@/shared/query/key';
+import { useFetchQuery } from '@/shared/query/useFetchQuery';
 import ProductItem from '@/shared/ui/ProductItem';
 import { ProductItemResponse, ProductResponse } from '@/types/response';
 
@@ -28,28 +30,29 @@ export const MainBox = styled.div`
 `;
 
 const SearchProducts = () => {
-  const searchData = useSelector((state: RootState) => state.search);
-  const [data, ProductListsLoading] = useSearchFetch<ProductResponse>({
-    searchData,
-    enabled: true,
+  const searchKeyword = useSelector((state: RootState) => state.search);
+  const { data, isLoading } = useFetchQuery<ProductResponse>({
+    queryKey: QUERY_KEYS.products.search(searchKeyword),
+    url: SERVICE_URLS.PRODUCTS.LIST,
+    params: { search: searchKeyword },
   });
   const ProductListData = data?.products ?? [];
 
   return (
     <Wrapper>
       <MainBox>
-        {ProductListData?.length && !ProductListsLoading ? (
+        {ProductListData?.length && !isLoading ? (
           <>
             {ProductListData?.map((el: ProductItemResponse) => (
-              <ProductItem key={el.id} {...el} isLoading={ProductListsLoading} />
+              <ProductItem key={el.id} {...el} isLoading={isLoading} />
             ))}
           </>
-        ) : ProductListData?.length || ProductListsLoading ? (
+        ) : ProductListData?.length || isLoading ? (
           <>
             {Array(4)
               .fill('')
               .map((_, i) => (
-                <ProductItem key={i} isLoading={ProductListsLoading} />
+                <ProductItem key={i} isLoading={isLoading} />
               ))}
           </>
         ) : (
