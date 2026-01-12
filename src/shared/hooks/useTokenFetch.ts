@@ -3,18 +3,11 @@ import { useEffect } from 'react';
 
 import { userTokenSlice } from '@/app/store';
 import useAppDispatch from '@/shared/hooks/useAppDispatch';
+import { AuthLoginRequest, AuthLoginResponse } from '@/types/response/token.types';
 
-export type TokenRequestBody = {
-  username: string;
-  password: string;
-};
-type TokenResponse = {
-  accessToken: string;
-  refreshToken: string;
-};
 type UseTokenFetchProps = {
   query: string;
-  body: TokenRequestBody;
+  body: AuthLoginResponse;
   enabled?: boolean;
 };
 
@@ -26,7 +19,7 @@ const useTokenFetch = ({ query, body, enabled = true }: UseTokenFetchProps) => {
 
     const fetchData = async () => {
       try {
-        const res = await axios.post<TokenResponse>(query, body);
+        const res = await axios.post<AuthLoginRequest>(query, body);
         dispatch(userTokenSlice.actions.setUserToken(res.data));
       } catch (err) {
         console.error(err);

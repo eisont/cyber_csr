@@ -1,6 +1,7 @@
 import { configureStore, createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 import { UserType } from '@/types/response';
+import { AuthLoginRequest, AuthLoginResponse } from '@/types/response/token.types';
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
@@ -22,13 +23,7 @@ export const searchSlice = createSlice({
   },
 });
 
-type LoginRequestBody = {
-  username: string;
-  password: string;
-  expiresInMins: number;
-};
-
-const initialLoginDataState: LoginRequestBody = {
+const initialLoginDataState: AuthLoginRequest = {
   username: '',
   password: '',
   expiresInMins: 30,
@@ -46,7 +41,7 @@ type UserTokenState = {
   accessToken: string | null;
   refreshToken?: string | null;
 };
-const initialUserTokenState: UserTokenState = {
+const initialUserTokenState: Pick<AuthLoginResponse, 'accessToken' | 'refreshToken'> = {
   accessToken: null,
   refreshToken: null,
 };

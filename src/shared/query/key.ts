@@ -1,4 +1,9 @@
 export const QUERY_KEYS = {
+  auth: {
+    login: (name: string) => ['auth', 'login', name] as const,
+    me: (token: string) => ['user', 'me', token] as const,
+  },
+
   users: {
     list: ['users', 'list'] as const,
     detail: (id: number) => ['users', 'detail', id] as const,

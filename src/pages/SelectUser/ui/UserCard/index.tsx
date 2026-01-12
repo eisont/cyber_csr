@@ -1,7 +1,9 @@
 import styled from '@emotion/styled';
-import { useDispatch } from 'react-redux';
 
-import { loginDataSlice } from '@/app/store';
+import { useNavigate } from 'react-router-dom';
+
+import { SERVICE_URLS } from '@/shared/api/endpoints';
+import { useLoginMutation } from '@/shared/hooks/useLoginMutation';
 import { UserType } from '@/types/response';
 
 const Wrapper = styled.div`
@@ -37,15 +39,21 @@ const HiddenBox = styled.div`
 `;
 
 const UserCard = ({ image, username, password }: Partial<UserType>) => {
-  const dispatch = useDispatch();
+  const loginMutation = useLoginMutation();
+  const navigate = useNavigate();
+
   const handleSelectorUser = () => {
-    dispatch(
-      loginDataSlice.actions.setLoginData({
-        username: username,
-        password: password,
+    if (!username || !password) return;
+
+    loginMutation.mutate({
+      method: 'post',
+      url: SERVICE_URLS.AUTH.LOGIN,
+      data: {
+        username,
+        password,
         expiresInMins: 30,
-      }),
-    );
+      },
+    });
   };
 
   return (
