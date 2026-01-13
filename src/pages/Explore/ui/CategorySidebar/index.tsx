@@ -4,10 +4,12 @@ import { useNavigate } from 'react-router-dom';
 
 import { productIdSlice, RootState } from '@/app/store';
 import * as S from '@/pages/Explore/ui/CategorySidebar/CategorySidebar.styled';
+import { SERVICE_URLS } from '@/shared/api/endpoints';
 import { DumText } from '@/shared/assets/styled/skeleton';
 import { ExpandDownSVG } from '@/shared/assets/SVGicons';
-import { useFetch } from '@/shared/hooks';
 import { kebabToTitleCase } from '@/shared/lib';
+import { QUERY_KEYS } from '@/shared/query/key';
+import { useFetchQuery } from '@/shared/query/useFetchQuery';
 import { CategoryListResponse } from '@/types/response';
 
 const CategorySidebar = () => {
@@ -17,10 +19,9 @@ const CategorySidebar = () => {
 
   const [toggle, setToggle] = useState(false);
 
-  const [ProductsCategoryListData, isLoading] = useFetch<CategoryListResponse>({
-    resource: 'products',
-    path: 'category-list',
-    enabled: true,
+  const { data: ProductsCategoryListData, isLoading } = useFetchQuery<CategoryListResponse>({
+    queryKey: QUERY_KEYS.products.categoryList,
+    url: SERVICE_URLS.PRODUCTS.CATEGORY_LIST,
   });
 
   const handleItemSelect = (id: string, type: string) => {

@@ -1,5 +1,10 @@
-import { FacebookSVG, InstagramSVG, TiktokSVG, TwitterSVG } from '@/shared/assets/SVGicons';
-import { LogoSVG } from '@/shared/assets/SVGicons';
+import {
+  FacebookSVG,
+  InstagramSVG,
+  LogoSVG,
+  TiktokSVG,
+  TwitterSVG,
+} from '@/shared/assets/SVGicons';
 import * as S from '@/shared/layout/Footer/Footer.styled';
 
 const Footer = () => {

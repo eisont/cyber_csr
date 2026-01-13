@@ -1,12 +1,14 @@
 import { useSelector } from 'react-redux';
-import { Link, useLocation, useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 
 import { RootState } from '@/app/store';
 import * as S from '@/pages/Explore/ui/Breadcrumb/Breadcrumb.styled';
+import { SERVICE_URLS } from '@/shared/api/endpoints';
 import { DumText } from '@/shared/assets/styled/skeleton';
 import { Arrow24pxSVG } from '@/shared/assets/SVGicons';
-import { useFetch } from '@/shared/hooks';
 import { kebabToTitleCase } from '@/shared/lib';
+import { QUERY_KEYS } from '@/shared/query/key';
+import { useFetchQuery } from '@/shared/query/useFetchQuery';
 import { ProductItemResponse } from '@/types/response';
 
 const Breadcrumb = () => {
@@ -14,10 +16,11 @@ const Breadcrumb = () => {
   const location = useLocation();
   const productId = useSelector((state: RootState) => state.productId);
 
-  const [ItemTitleData, isLoading] = useFetch<Pick<ProductItemResponse, 'id' | 'title'>>({
-    resource: 'products',
-    endPoint: [Number(params.id)],
-    query: { select: 'title' },
+  const { data: ItemTitleData, isLoading } = useFetchQuery<
+    Pick<ProductItemResponse, 'id' | 'title'>
+  >({
+    queryKey: QUERY_KEYS.products.detail(Number(params.id)),
+    url: SERVICE_URLS.PRODUCTS.DETAIL(Number(params.id)),
     enabled: Boolean(params.id),
   });
 

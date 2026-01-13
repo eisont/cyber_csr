@@ -1,8 +1,10 @@
 import { useDispatch, useSelector } from 'react-redux';
 
 import { productIdSlice, RootState } from '@/app/store';
-import { useFetch } from '@/shared/hooks';
+import { SERVICE_URLS } from '@/shared/api/endpoints';
 import { kebabToTitleCase } from '@/shared/lib';
+import { QUERY_KEYS } from '@/shared/query/key';
+import { useFetchQuery } from '@/shared/query/useFetchQuery';
 import * as S from '@/shared/ui/ProductGrid/ProductGrid.styled';
 import ProductItem from '@/shared/ui/ProductItem';
 import { CategoryListResponse, ProductResponse } from '@/types/response';
@@ -10,15 +12,14 @@ import { CategoryListResponse, ProductResponse } from '@/types/response';
 const ProductGrid = () => {
   const productId = useSelector((state: RootState) => state.productId);
 
-  const [CategoryListData, isLoading] = useFetch<CategoryListResponse>({
-    resource: 'products',
-    path: 'category-list',
-    enabled: true,
+  const { data: CategoryListData, isLoading } = useFetchQuery<CategoryListResponse>({
+    queryKey: QUERY_KEYS.products.categoryList,
+    url: SERVICE_URLS.PRODUCTS.CATEGORY_LIST,
   });
-  const [data, ProductListsLoading] = useFetch<ProductResponse>({
-    resource: 'products',
-    endPoint: ['category', productId],
-    enabled: true,
+
+  const { data, isLoading: ProductListsLoading } = useFetchQuery<ProductResponse>({
+    queryKey: QUERY_KEYS.products.byCategory(productId),
+    url: SERVICE_URLS.PRODUCTS.BY_CATEGORY(productId),
   });
   const ProductListData = data?.products ?? [];
 

@@ -1,11 +1,16 @@
 import * as S from '@/pages/SelectUser/SelectUser.styled';
 import UserCard from '@/pages/SelectUser/ui/UserCard';
-import { useFetch } from '@/shared/hooks';
+import { SERVICE_URLS } from '@/shared/api/endpoints';
+import { QUERY_KEYS } from '@/shared/query/key';
+import { useFetchQuery } from '@/shared/query/useFetchQuery';
 import { UsersResponse } from '@/types/response/user.types';
 
 const SelectUser = () => {
-  const [data] = useFetch<UsersResponse>({ resource: 'users', enabled: true });
-  const usersData = data?.users ?? [];
+  const { data } = useFetchQuery<UsersResponse>({
+    queryKey: QUERY_KEYS.users.list,
+    url: SERVICE_URLS.USERS.LIST,
+  });
+  const usersData = data?.users;
 
   return (
     <S.Wrapper>

@@ -1,7 +1,7 @@
-import type { PayloadAction } from '@reduxjs/toolkit';
-import { configureStore, createSlice } from '@reduxjs/toolkit';
+import { configureStore, createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 import { UserType } from '@/types/response';
+import { AuthLoginRequest } from '@/types/response/token.types';
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
@@ -23,13 +23,7 @@ export const searchSlice = createSlice({
   },
 });
 
-type LoginRequestBody = {
-  username: string;
-  password: string;
-  expiresInMins: number;
-};
-
-const initialLoginDataState: LoginRequestBody = {
+const initialLoginDataState: AuthLoginRequest = {
   username: '',
   password: '',
   expiresInMins: 30,
@@ -40,23 +34,6 @@ export const loginDataSlice = createSlice({
   initialState: initialLoginDataState,
   reducers: {
     setLoginData: (_, { payload }) => payload,
-  },
-});
-
-type UserTokenState = {
-  accessToken: string | null;
-  refreshToken?: string | null;
-};
-const initialUserTokenState: UserTokenState = {
-  accessToken: null,
-  refreshToken: null,
-};
-
-export const userTokenSlice = createSlice({
-  name: 'userToken',
-  initialState: initialUserTokenState,
-  reducers: {
-    setUserToken: (_, action: PayloadAction<UserTokenState>) => action.payload, // 전체 객체 교체
   },
 });
 
@@ -77,7 +54,6 @@ export const store = configureStore({
     productId: productIdSlice.reducer,
     search: searchSlice.reducer,
     loginData: loginDataSlice.reducer,
-    userToken: userTokenSlice.reducer,
     userInfo: userInfoSlice.reducer,
   },
 });

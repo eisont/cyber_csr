@@ -1,7 +1,9 @@
 import styled from '@emotion/styled';
 
 import * as S from '@/pages/Mypage/MyPage.styled';
-import { useFetch } from '@/shared/hooks';
+import { SERVICE_URLS } from '@/shared/api/endpoints';
+import { QUERY_KEYS } from '@/shared/query/key';
+import { useFetchQuery } from '@/shared/query/useFetchQuery';
 import { CartResponse } from '@/types/response/cart.types';
 
 const ItemRow = styled.div`
@@ -42,7 +44,10 @@ const Summary = styled.div`
 `;
 
 const CartCard = () => {
-  const [data] = useFetch<CartResponse>({ resource: 'cart', path: '9', enabled: true });
+  const { data } = useFetchQuery<CartResponse>({
+    queryKey: QUERY_KEYS.carts.detail(9),
+    url: SERVICE_URLS.CARTS.DETAIL(9),
+  });
   const ProductItem = data?.products;
 
   const totalQty = ProductItem?.reduce((sum, it) => sum + (it.quantity ?? 1), 0);

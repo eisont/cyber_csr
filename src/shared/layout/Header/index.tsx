@@ -1,15 +1,16 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
 
-import { RootState, searchSlice } from '@/app/store';
+import { searchSlice } from '@/app/store';
 import { BagSVG, CloseSVG, LogoSVG, MenuSVG, SearchSVG } from '@/shared/assets/SVGicons';
+import { useMeQuery } from '@/shared/hooks';
 import * as S from '@/shared/layout/Header/Header.styled';
 
 const Header = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const pathname = location.pathname;
-  const userInfo = useSelector((state: RootState) => state.userInfo);
+  const { data: userInfo } = useMeQuery();
 
   return (
     <S.Wrapper>

@@ -1,4 +1,4 @@
-import { memo, useState } from 'react';
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
@@ -14,7 +14,7 @@ type ProductItemProps = Partial<ProductItemResponse> & {
   isLoading?: boolean;
 };
 
-const ProductItem = memo((pr: ProductItemProps) => {
+const ProductItem = (pr: ProductItemProps) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [toggle, setToggle] = useState(false);
@@ -82,6 +82,6 @@ const ProductItem = memo((pr: ProductItemProps) => {
       </S.MainBox>
     </S.Wrapper>
   );
-});
+};
 
 export default ProductItem;

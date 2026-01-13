@@ -1,20 +1,20 @@
 import { useParams } from 'react-router-dom';
 
 import * as S from '@/pages/Explore/Detail/ui/ProductItemDetail/ProductItemDetail.styled';
+import { SERVICE_URLS } from '@/shared/api/endpoints';
 import { DumImg, DumText } from '@/shared/assets/styled/skeleton';
-import { useFetch } from '@/shared/hooks';
 import { calculateOriginalPrice } from '@/shared/lib';
+import { QUERY_KEYS } from '@/shared/query/key';
+import { useFetchQuery } from '@/shared/query/useFetchQuery';
 import { ProductItemResponse } from '@/types/response';
 
 const ProductItemDetail = () => {
   const params = useParams();
 
-  const [ItemData, isLoading] = useFetch<ProductItemResponse>({
-    resource: 'products',
-    endPoint: [Number(params.id)],
-    enabled: true,
+  const { data: ItemData, isLoading } = useFetchQuery<ProductItemResponse>({
+    queryKey: QUERY_KEYS.products.detail(Number(params.id)),
+    url: SERVICE_URLS.PRODUCTS.DETAIL(Number(params.id)),
   });
-
   return (
     <S.Wrapper>
       <S.MainBox>

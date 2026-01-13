@@ -7,7 +7,9 @@ import Breadcrumb from '@/pages/Explore/ui/Breadcrumb';
 import CategorySidebar from '@/pages/Explore/ui/CategorySidebar';
 import ProductsBox from '@/pages/Explore/ui/ProductsBox';
 import Recipes from '@/pages/Recipes';
-import { useFetch } from '@/shared/hooks';
+import { SERVICE_URLS } from '@/shared/api/endpoints';
+import { QUERY_KEYS } from '@/shared/query/key';
+import { useFetchQuery } from '@/shared/query/useFetchQuery';
 import { ProductResponse } from '@/types/response';
 import { RecipesType } from '@/types/response/recipe.types';
 
@@ -16,19 +18,16 @@ const Explore = () => {
   const location = useLocation();
   const productId = useSelector((state: RootState) => state.productId);
 
-  const [productsData] = useFetch<ProductResponse>({
-    resource: 'products',
-    path: 'category',
-    endPoint: [productId || 'beauty'],
-    query: { select: 'id' },
-    enabled: true,
+  const { data: productsData } = useFetchQuery<ProductResponse>({
+    queryKey: QUERY_KEYS.products.byCategory(productId),
+    url: SERVICE_URLS.PRODUCTS.BY_CATEGORY(productId),
+    params: { select: 'id' },
   });
   const ProductListData = productsData?.products;
 
-  const [recipesData] = useFetch<RecipesType>({
-    resource: 'recipes',
-    query: { limit: 50 },
-    enabled: true,
+  const { data: recipesData } = useFetchQuery<RecipesType>({
+    queryKey: QUERY_KEYS.recipes.list,
+    url: SERVICE_URLS.RECIPES.LIST,
   });
   const RecipesData = recipesData?.recipes;
 

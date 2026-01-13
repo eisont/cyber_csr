@@ -1,7 +1,5 @@
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
 
-import { RootState } from '@/app/store';
 import * as S from '@/pages/Mypage/MyPage.styled';
 import {
   AddressCard,
@@ -12,10 +10,11 @@ import {
   WorkEduCard,
 } from '@/pages/Mypage/ui';
 import CartCard from '@/pages/Mypage/ui/Cart';
+import { useMeQuery } from '@/shared/hooks';
 
 const MyPage = () => {
-  const userInfo = useSelector((state: RootState) => state.userInfo);
   const [toggle, setToggle] = useState(false);
+  const { data: userInfo } = useMeQuery();
 
   return (
     <S.Wrapper>

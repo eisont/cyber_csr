@@ -80,7 +80,7 @@ const AirPodMax = () => {
         <TitleText>
           <ThinTitle>Apple AirPods</ThinTitle> Max
         </TitleText>
-        <SubText>Computational audio. Listen, it's powerful</SubText>
+        <SubText>Computational audio. Listen, It&apos;s powerful</SubText>
       </AirPodMaxTextBox>
     </Wrapper>
   );
