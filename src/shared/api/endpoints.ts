@@ -6,7 +6,6 @@ export const SERVICE_URLS = {
 
   USERS: {
     LIST: '/users',
-    DETAIL: (id: number) => `/users/${id}`,
   },
 
   PRODUCTS: {
@@ -18,7 +17,6 @@ export const SERVICE_URLS = {
 
   RECIPES: {
     LIST: `/recipes`,
-    DETAIL: (id: number) => `/recipes/${id}`,
   },
 
   CARTS: {
