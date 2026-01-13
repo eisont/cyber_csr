@@ -4,7 +4,7 @@ import { tokenStorage } from '@/shared/auth/tokenStorage';
 import { useMutate } from '@/shared/query/useMutates';
 import { AuthLoginRequest, AuthLoginResponse } from '@/types/response/token.types';
 
-export const useLoginMutation = () => {
+const useLoginMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutate<AuthLoginResponse, { method: 'post'; url: string; data: AuthLoginRequest }>({
@@ -15,3 +15,5 @@ export const useLoginMutation = () => {
     },
   });
 };
+
+export default useLoginMutation;

@@ -2,7 +2,7 @@ import * as S from '@/pages/Mypage/MyPage.styled';
 import { UserType } from '@/types/response/user.types';
 
 type ProfileCardType = {
-  user: Partial<UserType> | null;
+  user?: Partial<UserType> | null;
   setToggle: (b: boolean) => void;
 };
 

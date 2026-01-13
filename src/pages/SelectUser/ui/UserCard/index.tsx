@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
 
 import { SERVICE_URLS } from '@/shared/api/endpoints';
-import { useLoginMutation } from '@/shared/hooks/useLoginMutation';
+import { useLoginMutation } from '@/shared/hooks';
 import { UserType } from '@/types/response';
 
 const Wrapper = styled.div`
@@ -12,6 +12,7 @@ const Wrapper = styled.div`
 
   &:hover .hiddenBox {
     opacity: 1;
+    cursor: pointer;
   }
 `;
 const Img = styled.img`
@@ -45,15 +46,22 @@ const UserCard = ({ image, username, password }: Partial<UserType>) => {
   const handleSelectorUser = () => {
     if (!username || !password) return;
 
-    loginMutation.mutate({
-      method: 'post',
-      url: SERVICE_URLS.AUTH.LOGIN,
-      data: {
-        username,
-        password,
-        expiresInMins: 30,
+    loginMutation.mutate(
+      {
+        method: 'post',
+        url: SERVICE_URLS.AUTH.LOGIN,
+        data: {
+          username,
+          password,
+          expiresInMins: 30,
+        },
       },
-    });
+      {
+        onSuccess: () => {
+          navigate(`/${username}`);
+        },
+      },
+    );
   };
 
   return (

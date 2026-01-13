@@ -10,7 +10,7 @@ const SelectUser = () => {
     queryKey: QUERY_KEYS.users.list,
     url: SERVICE_URLS.USERS.LIST,
   });
-  const usersData = data?.users ?? [];
+  const usersData = data?.users;
 
   return (
     <S.Wrapper>

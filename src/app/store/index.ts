@@ -1,7 +1,7 @@
 import { configureStore, createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 import { UserType } from '@/types/response';
-import { AuthLoginRequest, AuthLoginResponse } from '@/types/response/token.types';
+import { AuthLoginRequest } from '@/types/response/token.types';
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
@@ -37,23 +37,6 @@ export const loginDataSlice = createSlice({
   },
 });
 
-type UserTokenState = {
-  accessToken: string | null;
-  refreshToken?: string | null;
-};
-const initialUserTokenState: Pick<AuthLoginResponse, 'accessToken' | 'refreshToken'> = {
-  accessToken: null,
-  refreshToken: null,
-};
-
-export const userTokenSlice = createSlice({
-  name: 'userToken',
-  initialState: initialUserTokenState,
-  reducers: {
-    setUserToken: (_, action: PayloadAction<UserTokenState>) => action.payload, // 전체 객체 교체
-  },
-});
-
 type UserInfoState = UserType | null;
 const initialUserInfoState: UserInfoState = null;
 
@@ -71,7 +54,6 @@ export const store = configureStore({
     productId: productIdSlice.reducer,
     search: searchSlice.reducer,
     loginData: loginDataSlice.reducer,
-    userToken: userTokenSlice.reducer,
     userInfo: userInfoSlice.reducer,
   },
 });

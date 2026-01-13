@@ -4,7 +4,7 @@ import { QUERY_KEYS } from '@/shared/query/key';
 import { useFetchQuery } from '@/shared/query/useFetchQuery';
 import { UserType } from '@/types/response';
 
-export const useMeQuery = () => {
+const useMeQuery = () => {
   const token = tokenStorage.get();
 
   return useFetchQuery<UserType>({
@@ -13,3 +13,5 @@ export const useMeQuery = () => {
     enabled: !!token,
   });
 };
+
+export default useMeQuery;
