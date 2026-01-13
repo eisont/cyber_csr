@@ -5,9 +5,9 @@ import { SERVICE_URLS } from '@/shared/api/endpoints';
 import { kebabToTitleCase } from '@/shared/lib';
 import { QUERY_KEYS } from '@/shared/query/key';
 import { useFetchQuery } from '@/shared/query/useFetchQuery';
+import { CategoryListResponse, ProductResponse } from '@/shared/types/response';
 import * as S from '@/shared/ui/ProductGrid/ProductGrid.styled';
 import ProductItem from '@/shared/ui/ProductItem';
-import { CategoryListResponse, ProductResponse } from '@/types/response';
 
 const ProductGrid = () => {
   const productId = useSelector((state: RootState) => state.productId);

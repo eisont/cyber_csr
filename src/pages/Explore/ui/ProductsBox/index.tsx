@@ -5,8 +5,8 @@ import * as S from '@/pages/Explore/ui/ProductsBox/ProductsBox.styled';
 import { SERVICE_URLS } from '@/shared/api/endpoints';
 import { QUERY_KEYS } from '@/shared/query/key';
 import { useFetchQuery } from '@/shared/query/useFetchQuery';
+import { ProductResponse } from '@/shared/types/response';
 import ProductItem from '@/shared/ui/ProductItem';
-import { ProductResponse } from '@/types/response';
 
 const ProductsBox = () => {
   const productId = useSelector((state: RootState) => state.productId);

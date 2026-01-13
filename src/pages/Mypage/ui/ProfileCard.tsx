@@ -1,5 +1,5 @@
 import * as S from '@/pages/Mypage/MyPage.styled';
-import { UserType } from '@/types/response/user.types';
+import { UserType } from '@/shared/types/response';
 
 type ProfileCardType = {
   user?: Partial<UserType> | null;

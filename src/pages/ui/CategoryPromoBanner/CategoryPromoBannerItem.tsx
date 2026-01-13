@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 
 import { FlexCenter, FlexColBetween } from '@/shared/assets/styled/CommonStyled';
-import { GetMonkCategoryPromoItemsResponse } from '@/types/response';
+import { GetMonkCategoryPromoItemsResponse } from '@/shared/types/response';
 
 type Props = {
   background?: string;

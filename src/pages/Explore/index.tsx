@@ -10,8 +10,7 @@ import Recipes from '@/pages/Recipes';
 import { SERVICE_URLS } from '@/shared/api/endpoints';
 import { QUERY_KEYS } from '@/shared/query/key';
 import { useFetchQuery } from '@/shared/query/useFetchQuery';
-import { ProductResponse } from '@/types/response';
-import { RecipesType } from '@/types/response/recipe.types';
+import { ProductResponse, RecipesType } from '@/shared/types/response';
 
 const Explore = () => {
   const params = useParams();

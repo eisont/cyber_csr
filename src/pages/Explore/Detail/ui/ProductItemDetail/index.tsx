@@ -6,7 +6,7 @@ import { DumImg, DumText } from '@/shared/assets/styled/skeleton';
 import { calculateOriginalPrice } from '@/shared/lib';
 import { QUERY_KEYS } from '@/shared/query/key';
 import { useFetchQuery } from '@/shared/query/useFetchQuery';
-import { ProductItemResponse } from '@/types/response';
+import { ProductItemResponse } from '@/shared/types/response';
 
 const ProductItemDetail = () => {
   const params = useParams();

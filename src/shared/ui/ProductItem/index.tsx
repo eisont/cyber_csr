@@ -7,8 +7,8 @@ import { DumImg, DumText } from '@/shared/assets/styled/skeleton';
 import { AddToCartSVG, EmptyCartSVG } from '@/shared/assets/SVGicons';
 import { useIntersectionObserver } from '@/shared/hooks';
 import { calculateOriginalPrice } from '@/shared/lib';
+import { ProductItemResponse } from '@/shared/types/response';
 import * as S from '@/shared/ui/ProductItem/ProductItem.styled';
-import { ProductItemResponse } from '@/types/response';
 
 type ProductItemProps = Partial<ProductItemResponse> & {
   isLoading?: boolean;
