@@ -26,14 +26,16 @@ export const EmptyState = ({
   actionLabel,
   onAction,
 }: EmptyStateProps) => {
+  // actionLabel과 onAction이 모두 있을 때만 버튼 노출
+  const showAction = Boolean(actionLabel && onAction);
+
   return (
     <div className="flex flex-col gap-2 rounded-lg border border-gray-200 bg-white p-5">
       <div className="text-base font-semibold">{title}</div>
 
       {description ? <div className="text-sm text-gray-600">{description}</div> : null}
 
-      {/* actionLabel/onAction이 모두 있을 때만 버튼 노출 */}
-      {actionLabel && onAction ? (
+      {showAction ? (
         <button
           type="button"
           onClick={onAction}

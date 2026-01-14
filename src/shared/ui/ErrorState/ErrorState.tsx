@@ -25,6 +25,7 @@ export const ErrorState = ({
   return (
     <div className="flex flex-col gap-3 rounded-lg border border-gray-200 bg-white p-5">
       <div className="text-base font-semibold">{title}</div>
+
       <div className="text-sm text-gray-600">{message}</div>
 
       {/* onRetry가 있을 때만 버튼 렌더링: 재사용성을 높임 */}
