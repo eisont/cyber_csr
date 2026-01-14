@@ -9,16 +9,14 @@ import { Arrow24pxSVG } from '@/shared/assets/SVGicons';
 import { kebabToTitleCase } from '@/shared/lib';
 import { QUERY_KEYS } from '@/shared/query/key';
 import { useFetchQuery } from '@/shared/query/useFetchQuery';
-import { ProductItemResponse } from '@/shared/types/response';
+import { Product } from '@/shared/types/response';
 
 const Breadcrumb = () => {
   const params = useParams();
   const location = useLocation();
   const productId = useSelector((state: RootState) => state.productId);
 
-  const { data: ItemTitleData, isLoading } = useFetchQuery<
-    Pick<ProductItemResponse, 'id' | 'title'>
-  >({
+  const { data: ItemTitleData, isLoading } = useFetchQuery<Pick<Product, 'id' | 'title'>>({
     queryKey: QUERY_KEYS.products.detail(Number(params.id)),
     url: SERVICE_URLS.PRODUCTS.DETAIL(Number(params.id)),
     enabled: Boolean(params.id),

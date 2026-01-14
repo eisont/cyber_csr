@@ -6,7 +6,7 @@ import { SERVICE_URLS } from '@/shared/api/endpoints';
 import { DumBox } from '@/shared/assets/styled/skeleton';
 import { QUERY_KEYS } from '@/shared/query/key';
 import { useFetchQuery } from '@/shared/query/useFetchQuery';
-import { ProductItemResponse, ProductResponse } from '@/shared/types/response';
+import { Product, ProductsListResponse } from '@/shared/types/response';
 import ProductItem from '@/shared/ui/ProductItem';
 
 const Wrapper = styled.div`
@@ -31,7 +31,7 @@ export const MainBox = styled.div`
 
 const SearchProducts = () => {
   const searchKeyword = useSelector((state: RootState) => state.search);
-  const { data, isLoading } = useFetchQuery<ProductResponse>({
+  const { data, isLoading } = useFetchQuery<ProductsListResponse>({
     queryKey: QUERY_KEYS.products.search(searchKeyword),
     url: SERVICE_URLS.PRODUCTS.LIST,
     params: { search: searchKeyword },
@@ -43,7 +43,7 @@ const SearchProducts = () => {
       <MainBox>
         {ProductListData?.length && !isLoading ? (
           <>
-            {ProductListData?.map((el: ProductItemResponse) => (
+            {ProductListData?.map((el: Product) => (
               <ProductItem key={el.id} {...el} isLoading={isLoading} />
             ))}
           </>

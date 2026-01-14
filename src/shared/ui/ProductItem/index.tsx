@@ -7,10 +7,10 @@ import { DumImg, DumText } from '@/shared/assets/styled/skeleton';
 import { AddToCartSVG, EmptyCartSVG } from '@/shared/assets/SVGicons';
 import { useIntersectionObserver } from '@/shared/hooks';
 import { calculateOriginalPrice } from '@/shared/lib';
-import { ProductItemResponse } from '@/shared/types/response';
+import { Product } from '@/shared/types/response';
 import * as S from '@/shared/ui/ProductItem/ProductItem.styled';
 
-type ProductItemProps = Partial<ProductItemResponse> & {
+type ProductItemProps = Partial<Product> & {
   isLoading?: boolean;
 };
 
@@ -20,10 +20,7 @@ const ProductItem = (pr: ProductItemProps) => {
   const [toggle, setToggle] = useState(false);
   const { ref } = useIntersectionObserver();
 
-  const handleItemSelect = (
-    productId: ProductItemResponse['category'],
-    id: ProductItemResponse['id'],
-  ) => {
+  const handleItemSelect = (productId: Product['category'], id: Product['id']) => {
     dispatch(productIdSlice.actions.getProductId(productId));
     navigate(`/explore/${id}`);
   };

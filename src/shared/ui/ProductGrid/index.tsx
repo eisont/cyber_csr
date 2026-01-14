@@ -5,7 +5,7 @@ import { SERVICE_URLS } from '@/shared/api/endpoints';
 import { kebabToTitleCase } from '@/shared/lib';
 import { QUERY_KEYS } from '@/shared/query/key';
 import { useFetchQuery } from '@/shared/query/useFetchQuery';
-import { CategoryListResponse, ProductResponse } from '@/shared/types/response';
+import { CategoryListResponse, ProductsListResponse } from '@/shared/types/response';
 import * as S from '@/shared/ui/ProductGrid/ProductGrid.styled';
 import ProductItem from '@/shared/ui/ProductItem';
 
@@ -17,7 +17,7 @@ const ProductGrid = () => {
     url: SERVICE_URLS.PRODUCTS.CATEGORY_LIST,
   });
 
-  const { data, isLoading: ProductListsLoading } = useFetchQuery<ProductResponse>({
+  const { data, isLoading: ProductListsLoading } = useFetchQuery<ProductsListResponse>({
     queryKey: QUERY_KEYS.products.byCategory(productId),
     url: SERVICE_URLS.PRODUCTS.BY_CATEGORY(productId),
   });
