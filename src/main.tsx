@@ -1,6 +1,6 @@
+import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 
-import App from '@/app/App';
 /**
  * 만든 이유
  * - Vite는 엔트리에서 CSS를 import해야 번들에 포함된다.
@@ -8,10 +8,29 @@ import App from '@/app/App';
  */
 import '@/index.css';
 
+import { Provider } from 'react-redux';
+import { BrowserRouter } from 'react-router-dom';
+
+import { QueryProvider, ScrollToTop } from '@/app/provider';
+
+import AppRouter from '@/app/routes';
+import { store } from '@/app/store';
+
 const container = document.getElementById('root');
 
 if (!container) {
   throw new Error('Root element (#root) not found');
 }
 
-createRoot(container).render(<App />);
+createRoot(container).render(
+  <StrictMode>
+    <QueryProvider>
+      <BrowserRouter>
+        <ScrollToTop />
+        <Provider store={store}>
+          <AppRouter />
+        </Provider>
+      </BrowserRouter>
+    </QueryProvider>
+  </StrictMode>,
+);
