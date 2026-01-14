@@ -1,0 +1,7 @@
+/* 
+  만든 이유
+  - Tailwind v4는 CSS 엔트리에서 @import "tailwindcss";로 유틸리티를 로드한다.
+  - 이 파일을 main.tsx에서 import해야 실제 스타일이 적용된다.
+ */
+
+@import 'tailwindcss';
