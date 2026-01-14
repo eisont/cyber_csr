@@ -4,5 +4,5 @@
  * - 외부에 노출할 모듈을 통제하기 위한 배럴 파일.
  */
 
-export * from './apiClient';
 export * from './apiError';
+export * from './axios';
