@@ -10,6 +10,7 @@
  *  ProductsBox 내부에서의 중복 패칭을 제거하고 데이터 흐름을 단순화했다.
  */
 
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Outlet, useLocation, useParams, useSearchParams } from 'react-router-dom';
 
@@ -19,6 +20,7 @@ import CategorySidebar from '@/pages/Explore/ui/CategorySidebar';
 import ProductsBox from '@/pages/Explore/ui/ProductsBox';
 import Recipes from '@/pages/Recipes';
 import { SERVICE_URLS } from '@/shared/api/endpoints';
+import { useDebouncedValue } from '@/shared/lib/useDebouncedValue';
 import { QUERY_KEYS } from '@/shared/query/key';
 import { useFetchQuery } from '@/shared/query/useFetchQuery';
 import { ProductsListResponse, RecipesType } from '@/shared/types/response';
@@ -38,6 +40,20 @@ const Explore = () => {
   /** 카테고리 상태는 현재 redux productId를 그대로 유지(변경 범위 최소화) */
   const productId = useSelector((state: RootState) => state.productId);
 
+  /**
+   * 검색 input은 즉시 반응하고, URL 반영은 디바운스된 값으로만 수행한다.
+   */
+
+  const q = searchParams.get('q') ?? '';
+  const [inputQ, setInputQ] = useState(q);
+
+  // URL이 뒤로가기/앞으로가기로 바뀌면 input도 동기화
+  useEffect(() => {
+    setInputQ(q);
+  }, [q]);
+
+  const debouncedQ = useDebouncedValue(inputQ, 300);
+
   const rawLimit = parseNumberParam(searchParams.get('limit'), 6);
   const rawSkip = parseNumberParam(searchParams.get('skip'), 0);
 
@@ -50,7 +66,6 @@ const Explore = () => {
    * - sort: Day4에서 본격 적용 (Day1은 queryKey에 포함만 해도 OK)
    */
 
-  const q = searchParams.get('q') ?? '';
   const limit = safeLimit;
   const skip = safeSkip;
   const sort = searchParams.get('sort') ?? '';
@@ -96,6 +111,32 @@ const Explore = () => {
   });
 
   const productList = productsData?.products ?? [];
+
+  /**
+   * debouncedQ가 확정되면 URL의 q를 갱신하고, 검색 조건이 바뀌었으니 skip은 0으로 리셋한다.
+   */
+  useEffect(() => {
+    // 현재 URL q와 동일하면 불필요 업데이트 방지
+    if (debouncedQ === q) return;
+
+    const nextParams = new URLSearchParams(searchParams);
+
+    // q가 빈 문자열이면 파라미터 제거 (깔끔한 URL)
+    if (debouncedQ.trim().length === 0) {
+      nextParams.delete('q');
+    } else {
+      nextParams.set('q', debouncedQ.trim());
+    }
+
+    // 검색 조건 변경 시 첫 페이지로
+    nextParams.set('skip', '0');
+
+    // limit은 유지
+    nextParams.set('limit', String(limit));
+
+    setSearchParams(nextParams);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedQ]);
 
   /**
    * 만든 이유
@@ -147,6 +188,7 @@ const Explore = () => {
   const handleNextPage = () => {
     updateSkip(skip + limit);
   };
+
   /**
    * Recipes 패칭(기존 로직 유지)
    * - recipes는 recipes 라우트에서만 필요하므로 enabled로 제어
@@ -186,6 +228,25 @@ const Explore = () => {
                */}
               {location.pathname !== '/recipes' ? (
                 <>
+                  <div className="mb-3 flex items-center gap-2 w-207.75">
+                    <input
+                      value={inputQ}
+                      onChange={(e) => setInputQ(e.target.value)}
+                      placeholder="검색어를 입력해주세요."
+                      className="w-full rounded-md border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black/20"
+                    />
+
+                    {inputQ.length > 0 ? (
+                      <button
+                        type="button"
+                        onClick={() => setInputQ('')}
+                        className="shrink-0 rounded-md border border-gray-200 bg-white px-3 py-2 text-sm"
+                      >
+                        Clear
+                      </button>
+                    ) : null}
+                  </div>
+
                   <Pagination
                     currentPage={currentPage}
                     totalPages={totalPages}
