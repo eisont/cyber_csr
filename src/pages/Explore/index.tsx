@@ -23,6 +23,7 @@ import { QUERY_KEYS } from '@/shared/query/key';
 import { useFetchQuery } from '@/shared/query/useFetchQuery';
 import { ProductsListResponse, RecipesType } from '@/shared/types/response';
 import { EmptyState, ErrorState, SkeletonBox } from '@/shared/ui';
+import { Pagination } from '@/shared/ui/Pagination/Pagination';
 
 /** URL 파라미터를 안전하게 number로 파싱하기 위한 유틸(숫자 아닌 값이 들어오면 기본값 사용) */
 const parseNumberParam = (value: string | null, fallback: number) => {
@@ -33,20 +34,26 @@ const parseNumberParam = (value: string | null, fallback: number) => {
 const Explore = () => {
   const params = useParams();
   const location = useLocation();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   /** 카테고리 상태는 현재 redux productId를 그대로 유지(변경 범위 최소화) */
   const productId = useSelector((state: RootState) => state.productId);
 
+  const rawLimit = parseNumberParam(searchParams.get('limit'), 6);
+  const rawSkip = parseNumberParam(searchParams.get('skip'), 0);
+
+  const safeLimit = rawLimit > 0 ? rawLimit : 6;
+  const safeSkip = rawSkip > 0 ? rawSkip : 0;
   /**
    * Week2 Day1: URL을 상태로 사용
    * - q: 검색어 (있으면 search endpoint 사용)
    * - limit/skip: 페이지 네이션
    * - sort: Day4에서 본격 적용 (Day1은 queryKey에 포함만 해도 OK)
    */
+
   const q = searchParams.get('q') ?? '';
-  const limit = parseNumberParam(searchParams.get('limit'), 12);
-  const skip = parseNumberParam(searchParams.get('skip'), 0);
+  const limit = safeLimit;
+  const skip = safeSkip;
   const sort = searchParams.get('sort') ?? '';
 
   /**
@@ -91,8 +98,56 @@ const Explore = () => {
 
   const productList = productsData?.products ?? [];
 
+  /**
+   * 만든 이유
+   * - 페이지네이션은 URL의 skip/limit를 변경하는 것으로 구현한다.
+   * - 이렇게 하면 새로고침/공유/뒤로가기에서도 동일한 상태가 유지된다.
+   */
+
+  // productsData가 없을 때를 대비해 현재 페이지 길이로 fallback
   const total = productsData?.total ?? productList.length;
 
+  const totalPages = total > 0 ? Math.ceil(total / limit) : undefined;
+
+  // 현재 페이지(1부터 시작)
+  const currentPage = Math.floor(skip / limit) + 1;
+
+  // 마지막 페이지 여부 (total이 있을 때만 정확)
+  const isLastPage = total > 0 ? skip + limit >= total : false;
+
+  // 이전 페이지 가능 여부
+  const canPrev = skip > 0;
+
+  // 다음 페이지 가능 여부
+  const canNext = total > 0 ? !isLastPage : productList.length === limit;
+
+  /**
+   * URL 쿼리스트링 업데이트 유틸
+   * - 기존 q/sort/limit를 유지하면서 skip만 변경한다.
+   * - 값은 string으로 넣어야 URLSearchParams가 정상 동작한다.
+   */
+  const updateSkip = (nextSkip: number) => {
+    const safeSkip = Math.max(nextSkip, 0);
+
+    // 기존 파라미터를 기반으로 새 params 생성(보존)
+    const nextParams = new URLSearchParams(searchParams);
+
+    nextParams.set('skip', String(safeSkip));
+    nextParams.set('limit', String(limit)); // limit도 항상 유지(안전)
+
+    // q/sort는 이미 searchParams에 있으면 그대로 남는다.
+    // (없으면 set하지 않아도 됨)
+
+    setSearchParams(nextParams);
+  };
+
+  const handlePrevPage = () => {
+    updateSkip(skip - limit);
+  };
+
+  const handleNextPage = () => {
+    updateSkip(skip + limit);
+  };
   /**
    * Recipes 패칭(기존 로직 유지)
    * - recipes는 recipes 라우트에서만 필요하므로 enabled로 제어
@@ -132,6 +187,16 @@ const Explore = () => {
                */}
               {location.pathname !== '/recipes' ? (
                 <>
+                  <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    canPrev={canPrev}
+                    canNext={canNext}
+                    onPrev={handlePrevPage}
+                    onNext={handleNextPage}
+                    isLoading={isProductsLoading}
+                  />
+
                   {/* 로딩 */}
                   {isProductsLoading ? (
                     <div className="w-207.75">
@@ -145,23 +210,27 @@ const Explore = () => {
 
                   {/* 에러 */}
                   {!isProductsLoading && isProductsError ? (
-                    <ErrorState
-                      title="상품을 불러오지 못했어."
-                      message={
-                        typeof (productsError as { message?: unknown })?.message === 'string'
-                          ? ((productsError as { message?: unknown }).message as string)
-                          : '잠시 후 다시 시도해줘.'
-                      }
-                      onRetry={() => refetchProducts()}
-                    />
+                    <div className="w-207.75">
+                      <ErrorState
+                        title="상품을 불러오지 못했어."
+                        message={
+                          typeof (productsError as { message?: unknown })?.message === 'string'
+                            ? ((productsError as { message?: unknown }).message as string)
+                            : '잠시 후 다시 시도해줘.'
+                        }
+                        onRetry={() => refetchProducts()}
+                      />
+                    </div>
                   ) : null}
 
                   {/* 빈값 */}
                   {!isProductsLoading && !isProductsError && productList.length === 0 ? (
-                    <EmptyState
-                      title="상품이 없어."
-                      description="검색 조건이나 카테고리를 바꿔보자."
-                    />
+                    <div className="w-207.75">
+                      <EmptyState
+                        title="상품이 없어."
+                        description="검색 조건이나 카테고리를 바꿔보자."
+                      />
+                    </div>
                   ) : null}
 
                   {/* 성공 */}
