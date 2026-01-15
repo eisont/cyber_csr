@@ -1,8 +1,19 @@
+/**
+ * 만든 이유
+ * Explore는 "상품 목록"의 중심 페이지다.
+ * Week 2 목표는 URL(쿼리스트링)을 상태로 삼아
+ *  1) 페이지네이션(skip/limit)
+ *  2) 검색(q)
+ *  3) (추후) 정렬(sort)
+ *  을 새로고침/공유 가능하게 유지하는 것이다.
+ * - 또한 Products 패칭을 Explore로 통합하여,
+ *  ProductsBox 내부에서의 중복 패칭을 제거하고 데이터 흐름을 단순화했다.
+ */
+
 import { useSelector } from 'react-redux';
-import { Outlet, useLocation, useParams } from 'react-router-dom';
+import { Outlet, useLocation, useParams, useSearchParams } from 'react-router-dom';
 
 import { RootState } from '@/app/store';
-import * as S from '@/pages/Explore/Explore.styled';
 import Breadcrumb from '@/pages/Explore/ui/Breadcrumb';
 import CategorySidebar from '@/pages/Explore/ui/CategorySidebar';
 import ProductsBox from '@/pages/Explore/ui/ProductsBox';
@@ -10,53 +21,164 @@ import Recipes from '@/pages/Recipes';
 import { SERVICE_URLS } from '@/shared/api/endpoints';
 import { QUERY_KEYS } from '@/shared/query/key';
 import { useFetchQuery } from '@/shared/query/useFetchQuery';
-import { ProductResponse, RecipesType } from '@/shared/types/response';
+import { ProductsListResponse, RecipesType } from '@/shared/types/response';
+import { EmptyState, ErrorState, SkeletonBox } from '@/shared/ui';
+
+/** URL 파라미터를 안전하게 number로 파싱하기 위한 유틸(숫자 아닌 값이 들어오면 기본값 사용) */
+const parseNumberParam = (value: string | null, fallback: number) => {
+  const n = Number(value);
+  return Number.isFinite(n) ? n : fallback;
+};
 
 const Explore = () => {
   const params = useParams();
   const location = useLocation();
+  const [searchParams] = useSearchParams();
+
+  /** 카테고리 상태는 현재 redux productId를 그대로 유지(변경 범위 최소화) */
   const productId = useSelector((state: RootState) => state.productId);
 
-  const { data: productsData } = useFetchQuery<ProductResponse>({
-    queryKey: QUERY_KEYS.products.byCategory(productId),
-    url: SERVICE_URLS.PRODUCTS.BY_CATEGORY(productId),
-    params: { select: 'id' },
-  });
-  const ProductListData = productsData?.products;
+  /**
+   * Week2 Day1: URL을 상태로 사용
+   * - q: 검색어 (있으면 search endpoint 사용)
+   * - limit/skip: 페이지 네이션
+   * - sort: Day4에서 본격 적용 (Day1은 queryKey에 포함만 해도 OK)
+   */
+  const q = searchParams.get('q') ?? '';
+  const limit = parseNumberParam(searchParams.get('limit'), 12);
+  const skip = parseNumberParam(searchParams.get('skip'), 0);
+  const sort = searchParams.get('sort') ?? '';
 
+  /**
+   * queryKey에 "params 객체"를 넣어야 캐시가 정확히 분리된다.
+   * - q/limit/skip/sort가 바뀌면 다른 queryKey가 되어 자동 재요청
+   */
+  const listParams = { q, limit, skip, sort };
+
+  /**
+   * endpoint 분기 규칙
+   * - q가 있으면: /products/search?q=...
+   * - q가 없으면: /products/category/:category
+   *
+   * 주의:
+   * - dummyJson은 search와 category를 동시에 서버에서 합치는 지원이 제한적일 수 있다.
+   * - 그래서 우선순위를 q > category로 둔다.(검색어가 있으면 검색을 우선)
+   */
+  const productsUrl =
+    q.trim().length > 0
+      ? SERVICE_URLS.PRODUCTS.SEARCH
+      : SERVICE_URLS.PRODUCTS.BY_CATEGORY(productId);
+
+  const productsParams = q.trim().length > 0 ? { q, limit, skip } : { limit, skip };
+
+  /**
+   * Products 패칭
+   * - location.pathname이 '/recipes' 일 때는 products를 굳이 요청하지 않도록 enabled로 제어한다.
+   */
+
+  const {
+    data: productsData,
+    isLoading: isProductsLoading,
+    isError: isProductsError,
+    error: productsError,
+    refetch: refetchProducts,
+  } = useFetchQuery<ProductsListResponse>({
+    queryKey: QUERY_KEYS.products.explore(productId, listParams),
+    url: productsUrl,
+    params: productsParams,
+    enabled: location.pathname !== '/recipes',
+  });
+
+  const productList = productsData?.products ?? [];
+
+  const total = productsData?.total ?? productList.length;
+
+  /**
+   * Recipes 패칭(기존 로직 유지)
+   * - recipes는 recipes 라우트에서만 필요하므로 enabled로 제어
+   */
   const { data: recipesData } = useFetchQuery<RecipesType>({
     queryKey: QUERY_KEYS.recipes.list,
     url: SERVICE_URLS.RECIPES.LIST,
+    enabled: location.pathname === '/recipes',
   });
-  const RecipesData = recipesData?.recipes;
+  const recipesList = recipesData?.recipes ?? [];
 
   return (
-    <S.Wrapper>
-      <S.MainBox>
+    <div className="flex justify-center">
+      <div className="w-280">
         <Breadcrumb />
 
         {!params.id ? (
-          <S.FlexBox>
+          <div className="flex justify-between">
             <CategorySidebar />
 
-            <S.FlexColBox>
-              <S.ProductsCount>
-                Selected Products:{' '}
-                <S.Count>
-                  {location.pathname === '/recipes'
-                    ? RecipesData?.length || 0
-                    : ProductListData?.length || 0}
-                </S.Count>
-              </S.ProductsCount>
+            <div className="flex flex-col">
+              <div className="flex items-center text-[#6c6c6c] cursor-default">
+                Selected Products:
+                <div className="ml-1.25 text-[20px] font-normal text-black ">
+                  {location.pathname === '/recipes' ? recipesList?.length || 0 : total}
+                </div>
+              </div>
 
-              {location.pathname !== '/recipes' ? <ProductsBox /> : <Recipes />}
-            </S.FlexColBox>
-          </S.FlexBox>
+              {/**
+               * Week2 Day1 핵심:
+               * - ProductsBox는 이제 "렌더 전용" 컴포넌트가 된다(중복 패칭 제거).
+               * - 로딩/에러/empty 상태 UI는 Explore에서 통제하는 게 가장 갈끔하다.
+               *
+               * 현재는 ProductsBox가 내부에서 Skeleton(ProductItem isLoading)을 보여주던 구조라서,
+               * 우선 isLoading만 props로 전달해서 기존 UX를 유지할 수도 있다.
+               * 다음 스텝에서 공통 Skeleton/Error/Empty로 완전히 통일하면 더 좋아진다.
+               */}
+              {location.pathname !== '/recipes' ? (
+                <>
+                  {/* 로딩 */}
+                  {isProductsLoading ? (
+                    <div className="w-207.75">
+                      <div className="flex w-full gap-4 flex-wrap">
+                        {Array.from({ length: 6 }).map((_, i) => (
+                          <SkeletonBox key={i} className="w-66.5 h-108 bg-[#f6f6f6] my-2.5" />
+                        ))}
+                      </div>
+                    </div>
+                  ) : null}
+
+                  {/* 에러 */}
+                  {!isProductsLoading && isProductsError ? (
+                    <ErrorState
+                      title="상품을 불러오지 못했어."
+                      message={
+                        typeof (productsError as { message?: unknown })?.message === 'string'
+                          ? ((productsError as { message?: unknown }).message as string)
+                          : '잠시 후 다시 시도해줘.'
+                      }
+                      onRetry={() => refetchProducts()}
+                    />
+                  ) : null}
+
+                  {/* 빈값 */}
+                  {!isProductsLoading && !isProductsError && productList.length === 0 ? (
+                    <EmptyState
+                      title="상품이 없어."
+                      description="검색 조건이나 카테고리를 바꿔보자."
+                    />
+                  ) : null}
+
+                  {/* 성공 */}
+                  {!isProductsLoading && !isProductsError && productList.length > 0 ? (
+                    <ProductsBox products={productList} />
+                  ) : null}
+                </>
+              ) : (
+                <Recipes />
+              )}
+            </div>
+          </div>
         ) : (
           <Outlet />
         )}
-      </S.MainBox>
-    </S.Wrapper>
+      </div>
+    </div>
   );
 };
 

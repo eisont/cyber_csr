@@ -1,42 +1,31 @@
-import { useSelector } from 'react-redux';
+/**
+ * 만든 이유
+ * - Week 2 부터는 Explore 페이지가 URL 상태(q/limit/skip/sort)에 따라
+ *  상품 목록을 "단일 진실 소스(Single Source of Truth)"로 패칭한다.
+ * - ProductsBox가 내부에서 다시 패칭하면:
+ *  1) 중복 네트워크 요청
+ *  2) queryKey 충돌/캐시 혼선
+ *  3) URL 상태 변경 시 화면 불일치
+ * 같은 문제가 생긴다.
+ * - 그래서 ProductsBox는 "렌더 전용"으로 바꾸고, products 배열만 받아서 그린다.
+ */
 
-import { RootState } from '@/app/store';
-import * as S from '@/pages/Explore/ui/ProductsBox/ProductsBox.styled';
-import { SERVICE_URLS } from '@/shared/api/endpoints';
-import { QUERY_KEYS } from '@/shared/query/key';
-import { useFetchQuery } from '@/shared/query/useFetchQuery';
-import { ProductsListResponse } from '@/shared/types/response';
+import { Product } from '@/shared/types/response';
 import ProductItem from '@/shared/ui/ProductItem';
 
-const ProductsBox = () => {
-  const productId = useSelector((state: RootState) => state.productId);
+type ProductsBoxProps = {
+  products: Array<Product>;
+};
 
-  const { data, isLoading } = useFetchQuery<ProductsListResponse>({
-    queryKey: QUERY_KEYS.products.byCategory(productId),
-    url: SERVICE_URLS.PRODUCTS.BY_CATEGORY(productId),
-  });
-  const ProductListData = data?.products ?? [];
-
+const ProductsBox = ({ products }: ProductsBoxProps) => {
   return (
-    <S.Wrapper>
-      <S.ProductsBox>
-        {isLoading ? (
-          <>
-            {Array(4)
-              .fill('')
-              .map((_, i) => (
-                <ProductItem key={i} isLoading />
-              ))}
-          </>
-        ) : (
-          <>
-            {ProductListData?.map((el) => (
-              <ProductItem key={el.id} {...el} />
-            ))}
-          </>
-        )}
-      </S.ProductsBox>
-    </S.Wrapper>
+    <div className="w-207.75">
+      <div className="flex w-full gap-4 flex-wrap">
+        {products?.map((el) => (
+          <ProductItem key={el.id} {...el} />
+        ))}
+      </div>
+    </div>
   );
 };
 

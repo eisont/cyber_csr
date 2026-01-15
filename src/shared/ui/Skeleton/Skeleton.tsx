@@ -9,7 +9,7 @@ type SkeletonProps = {
   className?: string;
 };
 
-export const Skeleton = ({ className }: SkeletonProps) => {
+export const SkeletonBox = ({ className }: SkeletonProps) => {
   // animate-pulse: 로딩 중임을 시각적으로 표현
   return <div className={`animate-pulse rounded-md bg-gray-200 ${className ?? ''}`} />;
 };
