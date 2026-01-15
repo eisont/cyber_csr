@@ -33,7 +33,7 @@ export const Pagination = ({
       <div className="mb-3 flex items-center justify-between">
         <div className="text-sm text-gray-600">
           Page {currentPage}
-          {typeof totalPages === 'number' ? `/${totalPages}` : null}
+          {typeof totalPages === 'number' ? ` / ${totalPages}` : null}
         </div>
 
         <div className="flex gap-2">

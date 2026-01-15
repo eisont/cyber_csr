@@ -5,4 +5,5 @@
 
 export * from './EmptyState/EmptyState';
 export * from './ErrorState/ErrorState';
+export * from './Pagination';
 export * from './Skeleton/Skeleton';
