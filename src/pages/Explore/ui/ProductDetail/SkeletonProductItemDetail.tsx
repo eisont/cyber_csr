@@ -1,5 +1,5 @@
-import * as S from '@/pages/Explore/Detail/ui/ProductItemDetail/ProductItemDetail.styled';
-import { DumText, DumImg } from '@/shared/assets/styled/skeleton';
+import * as S from '@/pages/Explore/ui/ProductDetail/ui/ProductItemDetail/ProductItemDetail.styled';
+import { DumImg, DumText } from '@/shared/assets/styled/skeleton';
 
 const SkeletonProductItemDetail = () => {
   return (

@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
 import { Suspense } from 'react';
 
-import SkeletonProductItemDetail from '@/pages/Explore/Detail/SkeletonProductItemDetail';
-import ProductItemDetail from '@/pages/Explore/Detail/ui/ProductItemDetail';
+import SkeletonProductItemDetail from '@/pages/Explore/ui/ProductDetail/SkeletonProductItemDetail';
+import ProductItemDetail from '@/pages/Explore/ui/ProductDetail/ui/ProductItemDetail';
 import ProductGrid from '@/shared/ui/ProductGrid';
 
 const SideItem = styled.div`

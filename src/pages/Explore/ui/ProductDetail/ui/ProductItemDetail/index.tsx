@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
 
-import * as S from '@/pages/Explore/Detail/ui/ProductItemDetail/ProductItemDetail.styled';
+import * as S from '@/pages/Explore/ui/ProductDetail/ui/ProductItemDetail/ProductItemDetail.styled';
 import { SERVICE_URLS } from '@/shared/api/endpoints';
 import { DumImg, DumText } from '@/shared/assets/styled/skeleton';
 import { calculateOriginalPrice } from '@/shared/lib';
