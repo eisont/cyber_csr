@@ -1,4 +1,4 @@
-import { Gender } from '@/types/response';
+import { Gender } from '@/shared/types/response';
 
 type HairType = {
   color: string;

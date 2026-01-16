@@ -7,10 +7,9 @@ import { DumImg, DumText } from '@/shared/assets/styled/skeleton';
 import { AddToCartSVG, EmptyCartSVG } from '@/shared/assets/SVGicons';
 import { useIntersectionObserver } from '@/shared/hooks';
 import { calculateOriginalPrice } from '@/shared/lib';
-import * as S from '@/shared/ui/ProductItem/ProductItem.styled';
-import { ProductItemResponse } from '@/types/response';
+import { Product } from '@/shared/types/response';
 
-type ProductItemProps = Partial<ProductItemResponse> & {
+type ProductItemProps = Partial<Product> & {
   isLoading?: boolean;
 };
 
@@ -20,38 +19,35 @@ const ProductItem = (pr: ProductItemProps) => {
   const [toggle, setToggle] = useState(false);
   const { ref } = useIntersectionObserver();
 
-  const handleItemSelect = (
-    productId: ProductItemResponse['category'],
-    id: ProductItemResponse['id'],
-  ) => {
+  const handleItemSelect = (productId: Product['category'], id: Product['id']) => {
     dispatch(productIdSlice.actions.getProductId(productId));
     navigate(`/explore/${id}`);
   };
 
   return (
-    <S.Wrapper>
-      {pr?.stock === 0 && <S.SoldOutBox>SoldOut</S.SoldOutBox>}
-      <S.MainBox>
-        <S.IconBox>
-          <S.FlexBox>
+    <div className="flex justify-center items-center relative my-2.5 w-66.5 h-108 bg-[#f6f6f6] rounded-[10px] text-center">
+      {pr?.stock === 0 && (
+        <div className="absolute w-full h-full rounded-[10px] bg-white opacity-80 flex justify-center items-center text-4xl font-semibold cursor-default left-0 top-0">
+          SoldOut
+        </div>
+      )}
+      <div className="w-58.5 h-92.5 flex justify-between items-center flex-col">
+        <div className="w-full h-8 flex justify-between items-center">
+          <div className="flex justify-between items-center">
             <div>⭐️{pr?.rating}</div>
             <div style={{ marginLeft: '10px' }}>({pr?.reviews?.length})</div>
-          </S.FlexBox>
-          <S.CartIcon onClick={() => setToggle((pr) => !pr)}>
+          </div>
+          <div
+            className="flex justify-center items-center delay-30 cursor-pointer hover:scale-110"
+            onClick={() => setToggle((pr) => !pr)}
+          >
             {toggle ? (
               <>{AddToCartSVG({ size: '24', color: '#292d32', insideColor: 'yellowgreen' })} </>
             ) : (
               <> {EmptyCartSVG({ size: '24', color: '#292d32' })} </>
             )}
-          </S.CartIcon>
-          <S.MobileCartIcon onClick={() => setToggle((pr) => !pr)}>
-            {toggle ? (
-              <>{AddToCartSVG({ size: '20', color: '#292d32', insideColor: 'yellowgreen' })} </>
-            ) : (
-              <> {EmptyCartSVG({ size: '20', color: '#292d32' })} </>
-            )}
-          </S.MobileCartIcon>
-        </S.IconBox>
+          </div>
+        </div>
         {pr.isLoading ? (
           <>
             <DumImg width="160px" height="160px" />
@@ -60,27 +56,37 @@ const ProductItem = (pr: ProductItemProps) => {
           </>
         ) : (
           <>
-            <S.Img ref={ref} data-src={pr?.thumbnail} src={pr?.thumbnail} alt="thumbnail" />
-            <S.Title>{pr?.title}</S.Title>
-            <S.PriceBox>
-              <S.Price>
+            <img
+              className="h-40 delay-75 hover:scale-120 cursor-pointer"
+              ref={ref}
+              data-src={pr?.thumbnail}
+              src={pr?.thumbnail}
+              alt="thumbnail"
+            />
+            <div className="text-lg font-medium cursor-default">{pr?.title}</div>
+            <div className="flex">
+              <div className="mr-1.5">
                 $
                 {calculateOriginalPrice({
                   price: Number(pr.price),
                   discountPercentage: Number(pr.discountPercentage),
                 })}
-              </S.Price>
-              <S.DiscountPercent>{pr?.discountPercentage}%</S.DiscountPercent>
-            </S.PriceBox>
-            <S.DiscountedPrice>$ {pr?.price}</S.DiscountedPrice>
+              </div>
+              <div className="mr-1.5 line-through">{pr?.discountPercentage}%</div>
+            </div>
+            <div className="text-[26px] font-semibold cursor-default">$ {pr?.price}</div>
           </>
         )}
 
-        <S.Button onClick={() => handleItemSelect(String(pr.category), Number(pr.id))}>
+        <button
+          type="button"
+          onClick={() => handleItemSelect(String(pr.category), Number(pr.id))}
+          className="w-47 h-12 text-base rounded-lg bg-black text-white no-underline delay-100 flex justify-center items-center cursor-pointer hover:bg-gray-500"
+        >
           Detail
-        </S.Button>
-      </S.MainBox>
-    </S.Wrapper>
+        </button>
+      </div>
+    </div>
   );
 };
 

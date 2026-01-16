@@ -3,7 +3,7 @@ import UserCard from '@/pages/SelectUser/ui/UserCard';
 import { SERVICE_URLS } from '@/shared/api/endpoints';
 import { QUERY_KEYS } from '@/shared/query/key';
 import { useFetchQuery } from '@/shared/query/useFetchQuery';
-import { UsersResponse } from '@/types/response/user.types';
+import { UsersResponse } from '@/shared/types/response';
 
 const SelectUser = () => {
   const { data } = useFetchQuery<UsersResponse>({

@@ -1,22 +1,22 @@
 import { useQuery, UseQueryOptions } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
 
+import { ApiError } from '@/shared/api';
 import { axiosInstance } from '@/shared/api/axios';
 
 type Params = Record<string, unknown>;
 
-interface UseFetchQueryParams<TData> extends Omit<UseQueryOptions<TData, AxiosError>, 'queryFn'> {
+interface UseFetchQueryParams<TData> extends Omit<UseQueryOptions<TData, ApiError>, 'queryFn'> {
   url: string;
   params?: Params;
 }
 
-export function useFetchQuery<TData>({
+export const useFetchQuery = <TData>({
   queryKey,
   url,
   params,
   ...options
-}: UseFetchQueryParams<TData>) {
-  return useQuery<TData, AxiosError>({
+}: UseFetchQueryParams<TData>) => {
+  return useQuery<TData, ApiError>({
     queryKey: Array.isArray(queryKey) ? queryKey : [queryKey],
     queryFn: async () => {
       const res = await axiosInstance.get<TData>(url, { params });
@@ -24,4 +24,4 @@ export function useFetchQuery<TData>({
     },
     ...options,
   });
-}
+};

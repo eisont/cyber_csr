@@ -1,5 +1,5 @@
 import * as S from '@/pages/Mypage/MyPage.styled';
-import { UserType } from '@/types/response';
+import { UserType } from '@/shared/types/response';
 
 const WorkEduCard = ({ company, university }: Partial<UserType>) => {
   return (
