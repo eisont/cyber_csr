@@ -37,13 +37,11 @@ const Explore = () => {
   const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
 
-  /** 카테고리 상태는 현재 redux productId를 그대로 유지(변경 범위 최소화) */
   const productId = useSelector((state: RootState) => state.productId);
 
   /**
    * 검색 input은 즉시 반응하고, URL 반영은 디바운스된 값으로만 수행한다.
    */
-
   const q = searchParams.get('q') ?? '';
   const [inputQ, setInputQ] = useState(q);
 
@@ -65,52 +63,15 @@ const Explore = () => {
    * - limit/skip: 페이지 네이션
    * - sort: Day4에서 본격 적용 (Day1은 queryKey에 포함만 해도 OK)
    */
-
   const limit = safeLimit;
   const skip = safeSkip;
-  const sort = searchParams.get('sort') ?? '';
+  const order = searchParams.get('order') ?? '';
 
   /**
    * queryKey에 "params 객체"를 넣어야 캐시가 정확히 분리된다.
    * - q/limit/skip/sort가 바뀌면 다른 queryKey가 되어 자동 재요청
    */
-  const listParams = { q, limit, skip, sort };
-
-  /**
-   * endpoint 분기 규칙
-   * - q가 있으면: /products/search?q=...
-   * - q가 없으면: /products/category/:category
-   *
-   * 주의:
-   * - dummyJson은 search와 category를 동시에 서버에서 합치는 지원이 제한적일 수 있다.
-   * - 그래서 우선순위를 q > category로 둔다.(검색어가 있으면 검색을 우선)
-   */
-  const productsUrl =
-    q.trim().length > 0
-      ? SERVICE_URLS.PRODUCTS.SEARCH
-      : SERVICE_URLS.PRODUCTS.BY_CATEGORY(productId);
-
-  const productsParams = q.trim().length > 0 ? { q, limit, skip } : { limit, skip };
-
-  /**
-   * Products 패칭
-   * - location.pathname이 '/recipes' 일 때는 products를 굳이 요청하지 않도록 enabled로 제어한다.
-   */
-
-  const {
-    data: productsData,
-    isLoading: isProductsLoading,
-    isError: isProductsError,
-    error: productsError,
-    refetch: refetchProducts,
-  } = useFetchQuery<ProductsListResponse>({
-    queryKey: QUERY_KEYS.products.explore(productId, listParams),
-    url: productsUrl,
-    params: productsParams,
-    enabled: location.pathname !== '/recipes',
-  });
-
-  const productList = productsData?.products ?? [];
+  const listParams = { q, limit, skip, order };
 
   /**
    * debouncedQ가 확정되면 URL의 q를 갱신하고, 검색 조건이 바뀌었으니 skip은 0으로 리셋한다.
@@ -137,6 +98,37 @@ const Explore = () => {
     setSearchParams(nextParams);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedQ]);
+
+  /**
+   * endpoint 분기 규칙
+   * - q가 있으면: /products/search?q=...
+   * - q가 없으면: /products/category/:category
+   *
+   * 주의:
+   * - dummyJson은 search와 category를 동시에 서버에서 합치는 지원이 제한적일 수 있다.
+   * - 그래서 우선순위를 q > category로 둔다.(검색어가 있으면 검색을 우선)
+   */
+  const productsUrl =
+    q.trim().length > 0
+      ? SERVICE_URLS.PRODUCTS.SEARCH
+      : SERVICE_URLS.PRODUCTS.BY_CATEGORY(productId);
+
+  const productsParams = q.trim().length > 0 ? { q, limit, skip } : { limit, skip };
+
+  const {
+    data: productsData,
+    isLoading: isProductsLoading,
+    isError: isProductsError,
+    error: productsError,
+    refetch: refetchProducts,
+  } = useFetchQuery<ProductsListResponse>({
+    queryKey: QUERY_KEYS.products.explore(productId, listParams),
+    url: productsUrl,
+    params: productsParams,
+    enabled: location.pathname !== '/recipes',
+  });
+
+  const productList = productsData?.products ?? [];
 
   /**
    * 만든 이유
@@ -188,6 +180,48 @@ const Explore = () => {
   const handleNextPage = () => {
     updateSkip(skip + limit);
   };
+
+  /**
+   * 정렬 변경 시 URL 업데이트
+   * - sort가 바뀌면 목록 조건이 바뀌므로 skip은 0으로 리셋한다.
+   * - q/limit은 유지한다.
+   */
+  const updateSort = (nextSortBy: string) => {
+    const nextParams = new URLSearchParams(searchParams);
+
+    if (nextSortBy.trim().length === 0) {
+      nextParams.delete('order');
+    } else {
+      nextParams.set('order', nextSortBy);
+    }
+
+    // 정렬 변경은 첫 페이지로
+    nextParams.set('skip', '0');
+    nextParams.set('limit', String(limit));
+
+    setSearchParams(nextParams);
+  };
+
+  /**
+   * 클라이언트 정렬
+   * - 서버 정렬이 제한적인 환경(dummyJson)을 고려해, 우선 현재 페이지 데이터(productList)에 대해서만 정렬한다.
+   * - 원본 배열을 mutate 하지 않도록 복사 후 order한다.
+   */
+  const getSortedProducts = (products: typeof productList, sortKey: string) => {
+    const copied = [...products];
+
+    switch (sortKey) {
+      case 'asc':
+        return copied.sort((a, b) => (a.price ?? 0) - (b.price ?? 0));
+      case 'desc':
+        return copied.sort((a, b) => (b.price ?? 0) - (a.price ?? 0));
+
+      default:
+        return products;
+    }
+  };
+
+  const sortedProductList = getSortedProducts(productList, order);
 
   /**
    * Recipes 패칭(기존 로직 유지)
@@ -245,6 +279,17 @@ const Explore = () => {
                         Clear
                       </button>
                     ) : null}
+
+                    {/* 정렬 select 추가 */}
+                    <select
+                      value={order}
+                      onChange={(e) => updateSort(e.target.value)}
+                      className="shrink-0 rounded-md border border-gray-200 bg-white px-3 py-2 text-sm"
+                    >
+                      <option value="">기본</option>
+                      <option value="asc">가격 낮은순</option>
+                      <option value="desc">가격 높은순</option>
+                    </select>
                   </div>
 
                   <Pagination
@@ -295,7 +340,7 @@ const Explore = () => {
 
                   {/* 성공 */}
                   {!isProductsLoading && !isProductsError && productList.length > 0 ? (
-                    <ProductsBox products={productList} />
+                    <ProductsBox products={sortedProductList} />
                   ) : null}
                 </>
               ) : (
