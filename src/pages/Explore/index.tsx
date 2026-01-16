@@ -10,6 +10,7 @@
  *  ProductsBox 내부에서의 중복 패칭을 제거하고 데이터 흐름을 단순화했다.
  */
 
+import { useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Outlet, useLocation, useParams, useSearchParams } from 'react-router-dom';
@@ -19,6 +20,7 @@ import Breadcrumb from '@/pages/Explore/ui/Breadcrumb';
 import CategorySidebar from '@/pages/Explore/ui/CategorySidebar';
 import ProductsBox from '@/pages/Explore/ui/ProductsBox';
 import Recipes from '@/pages/Recipes';
+import { axiosInstance } from '@/shared/api';
 import { SERVICE_URLS } from '@/shared/api/endpoints';
 import { useDebouncedValue } from '@/shared/lib/useDebouncedValue';
 import { QUERY_KEYS } from '@/shared/query/key';
@@ -36,6 +38,13 @@ const Explore = () => {
   const params = useParams();
   const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
+
+  /**
+   * 만든 이유
+   * - Next 클릭 시 체감 로딩을 줄이기 위해 다음 페이지를 미리 받아둔다. (prefetch)
+   * - URL 상태 기반 queryKey를 그대로 사용하므로 캐시 일관성이 유지된다.
+   */
+  const queryClient = useQueryClient();
 
   const productId = useSelector((state: RootState) => state.productId);
 
@@ -135,7 +144,6 @@ const Explore = () => {
    * - 페이지네이션은 URL의 skip/limit를 변경하는 것으로 구현한다.
    * - 이렇게 하면 새로고침/공유/뒤로가기에서도 동일한 상태가 유지된다.
    */
-
   // productsData가 없을 때를 대비해 현재 페이지 길이로 fallback
   const total = productsData?.total ?? productList.length;
 
@@ -222,6 +230,37 @@ const Explore = () => {
   };
 
   const sortedProductList = getSortedProducts(productList, order);
+
+  useEffect(() => {
+    // 로딩 중/에러면 프리패치 의미 없음
+    if (isProductsLoading || isProductsError) return;
+
+    // 마지막 페이지면 다음 페이지 프리패치 불필요
+    if (!canNext) return;
+
+    const nextSkip = skip + limit;
+
+    const nextListParams = { q, limit, skip: nextSkip, order };
+
+    const nextUrl =
+      q.trim().length > 0
+        ? SERVICE_URLS.PRODUCTS.SEARCH
+        : SERVICE_URLS.PRODUCTS.BY_CATEGORY(productId);
+
+    const nextParams =
+      q.trim().length > 0 ? { q, limit, skip: nextSkip } : { limit, skip: nextSkip };
+
+    queryClient.prefetchQuery({
+      queryKey: QUERY_KEYS.products.explore(productId, nextListParams),
+      queryFn: async () => {
+        /** useFetchQuery 내부 구현이 axiosInstance.get을 쓰고 있으니, 여기서는 "axiosInstance"를 직접 쓰는게 가장 깔끔하다.
+         * (만약 shared/api에서 axiosInstance export 중이라면 그걸 import 해서 사용)
+         */
+        return axiosInstance.get(nextUrl, { params: nextParams }).then((r) => r.data);
+      },
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [q, order, limit, skip, productId, canNext, isProductsLoading, isProductsError]);
 
   /**
    * Recipes 패칭(기존 로직 유지)
