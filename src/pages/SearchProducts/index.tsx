@@ -6,7 +6,7 @@ import { SERVICE_URLS } from '@/shared/api/endpoints';
 import { DumBox } from '@/shared/assets/styled/skeleton';
 import { QUERY_KEYS } from '@/shared/query/key';
 import { useFetchQuery } from '@/shared/query/useFetchQuery';
-import { Product, ProductsListResponse } from '@/shared/types/response';
+import type { Product, ProductsListResponse } from '@/shared/types/response';
 import ProductItem from '@/shared/ui/ProductItem';
 
 const Wrapper = styled.div`

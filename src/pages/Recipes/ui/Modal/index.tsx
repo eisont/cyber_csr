@@ -1,6 +1,6 @@
 import * as S from '@/pages/Recipes/ui/RecipesItem/RecipesItem.styled';
 import { CloseSVG } from '@/shared/assets/SVGicons';
-import { RecipeItem } from '@/shared/types/response';
+import type { RecipeItem } from '@/shared/types/response';
 
 type ModalType = { data: Partial<RecipeItem>; onClose: () => void };
 

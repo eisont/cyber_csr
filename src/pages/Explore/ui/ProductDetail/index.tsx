@@ -5,7 +5,7 @@ import { RelatedProducts } from '@/pages/Explore/ui/ProductDetail/ui/RelateProdu
 import { SERVICE_URLS } from '@/shared/api/endpoints';
 import { QUERY_KEYS } from '@/shared/query/key';
 import { useFetchQuery } from '@/shared/query/useFetchQuery';
-import { Product } from '@/shared/types/response';
+import type { Product } from '@/shared/types/response';
 import { EmptyState, ErrorState, SkeletonBox } from '@/shared/ui';
 
 /**

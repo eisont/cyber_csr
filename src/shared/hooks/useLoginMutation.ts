@@ -2,7 +2,7 @@ import { useQueryClient } from '@tanstack/react-query';
 
 import { setAccessToken } from '@/shared/api';
 import { useMutate } from '@/shared/query/useMutates';
-import { AuthLoginRequest, AuthLoginResponse } from '@/shared/types/response';
+import type { AuthLoginRequest, AuthLoginResponse } from '@/shared/types/response';
 
 const useLoginMutation = () => {
   const queryClient = useQueryClient();
