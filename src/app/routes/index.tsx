@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 
 import Explore from '@/pages/Explore';
-import ProductDetail from '@/pages/Explore/Detail';
+import ProductDetail from '@/pages/Explore/ui/ProductDetail';
 import Layout from '@/pages/Layout';
 import MyPage from '@/pages/Mypage';
 import SearchProducts from '@/pages/SearchProducts';

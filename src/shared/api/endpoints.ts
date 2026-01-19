@@ -10,10 +10,10 @@ export const SERVICE_URLS = {
 
   PRODUCTS: {
     LIST: '/products',
-    DETAIL: (id: number) => `products/${id}`,
+    DETAIL: (id: number) => `/products/${id}`,
     CATEGORY_LIST: `/products/category-list`,
     SEARCH: `/products/search`,
-    BY_CATEGORY: (category: string) => `products/category/${category}`,
+    BY_CATEGORY: (category: string) => `/products/category/${category}`,
   },
 
   RECIPES: {

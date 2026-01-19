@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import { productIdSlice } from '@/app/store';
 import { DumImg, DumText } from '@/shared/assets/styled/skeleton';
@@ -16,12 +16,19 @@ type ProductItemProps = Partial<Product> & {
 const ProductItem = (pr: ProductItemProps) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
   const [toggle, setToggle] = useState(false);
   const { ref } = useIntersectionObserver();
 
+  /**
+   * 만든 이유
+   * - Week2에서 목록 샅애(q/skip/limit/order)를 URL로 관리하고 있으므로, 상세 페이지로 이동해도 이 쿼리를 유지해야 '뒤로가기 UX'가 깨지지 않는다.
+   */
   const handleItemSelect = (productId: Product['category'], id: Product['id']) => {
     dispatch(productIdSlice.actions.getProductId(productId));
-    navigate(`/explore/${id}`);
+
+    const query = location.search;
+    navigate(`/explore/${id}${query}`);
   };
 
   return (
