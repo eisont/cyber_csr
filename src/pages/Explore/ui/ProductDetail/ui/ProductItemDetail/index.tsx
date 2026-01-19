@@ -1,170 +1,99 @@
+import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
-import * as S from '@/pages/Explore/ui/ProductDetail/ui/ProductItemDetail/ProductItemDetail.styled';
 import { SERVICE_URLS } from '@/shared/api/endpoints';
-import { DumImg, DumText } from '@/shared/assets/styled/skeleton';
-import { calculateOriginalPrice } from '@/shared/lib';
 import { QUERY_KEYS } from '@/shared/query/key';
 import { useFetchQuery } from '@/shared/query/useFetchQuery';
 import { Product } from '@/shared/types/response';
+import { EmptyState, ErrorState, SkeletonBox } from '@/shared/ui';
+
+/**
+ * 만든 이유
+ * - /explore/:id 라우트에서 상품 상세 정보를 API로 조회해 보여준다.
+ * - Week2에서 만든 공통 상태 UI(Skeleton/Error/Empty)를 그대호 사용해 로딩/에러 UX를 일관되게 유지한다.
+ */
 
 const ProductItemDetail = () => {
   const params = useParams();
 
-  const { data: ItemData, isLoading } = useFetchQuery<Product>({
-    queryKey: QUERY_KEYS.products.detail(Number(params.id)),
-    url: SERVICE_URLS.PRODUCTS.DETAIL(Number(params.id)),
+  // params.id는 string | undefined 이므로 number로 안전변환
+  const productId = useMemo(() => {
+    const n = Number(params.id);
+    return Number.isFinite(n) ? n : null;
+  }, [params.id]);
+
+  const {
+    data: product,
+    isLoading,
+    isError,
+    error,
+    refetch,
+  } = useFetchQuery<Product>({
+    queryKey: productId
+      ? QUERY_KEYS.products.detail(productId)
+      : ['productId', 'detail', 'invalid'],
+    url: productId ? SERVICE_URLS.PRODUCTS.DETAIL(productId) : '',
+    enabled: Boolean(productId),
   });
+
+  if (!productId) {
+    return <EmptyState title="잘못된 상품 경로입니다." description="상품 ID를 다시 확인해보자." />;
+  }
+
+  if (isLoading) {
+    return <SkeletonBox className="w-250 h-70" />;
+  }
+
+  if (isError) {
+    const message =
+      typeof (error as { message?: unknown })?.message === 'string'
+        ? ((error as { message?: unknown })?.message as string)
+        : '잠시 후 다시 시도해보세요.';
+
+    return (
+      <ErrorState
+        title="상품 상세를 불러오지 못했습니다."
+        message={message}
+        onRetry={() => refetch()}
+      />
+    );
+  }
+
+  if (!product) {
+    return (
+      <EmptyState
+        title="상품 정보를 찾을 수 없습니다."
+        description="목록으로 다시 돌아가 선택해주세요"
+      />
+    );
+  }
+
   return (
-    <S.Wrapper>
-      <S.MainBox>
-        <S.Title>
-          {isLoading ? <DumText width="400px" height="46px" /> : <>{ItemData?.title}</>}
-        </S.Title>
-        <S.TagsBox>
-          {isLoading ? (
-            <S.Tags>
-              <DumText width="50px" height="17px" />
-            </S.Tags>
-          ) : (
-            <>
-              {ItemData?.tags?.map((el) => (
-                <S.Tags key={el}>#{el}</S.Tags>
-              ))}
-            </>
-          )}
-        </S.TagsBox>
-        <S.SubTitleBox>
-          <S.SubTitle>
-            <S.Text>브랜드:</S.Text>{' '}
-            {isLoading ? <DumText width="50px" height="15px" /> : <>{ItemData?.brand || '없음'}</>}
-          </S.SubTitle>
-          <S.SubTitle>
-            <S.Text>카테고리:</S.Text>
-            {isLoading ? <DumText width="50px" height="15px" /> : <>{ItemData?.category}</>}
-          </S.SubTitle>
-          <S.SubTitle>
-            <S.Text>SKU:</S.Text>
-            {isLoading ? <DumText width="50px" height="15px" /> : <>{ItemData?.sku}</>}
-          </S.SubTitle>
-        </S.SubTitleBox>
+    <div className="flex gap-6 p-4">
+      <div className="w-[320px] shrink-0 rounded-lg bg-[#f6f6f6] p-4">
+        <img
+          src={product.thumbnail}
+          alt={product.title}
+          className="h-70 w-full rounded-md object-cover"
+        />
+      </div>
 
-        <S.ContentBox>
-          <S.ImgBox>
-            {isLoading ? (
-              <DumImg width="500px" height="500px" />
-            ) : (
-              <S.ProductImg src={ItemData?.thumbnail} alt="thumbnail" />
-            )}
-          </S.ImgBox>
+      <div className="flex flex-1 flex-col gap-3">
+        <div className="text-2xl font-semibold">{product.title}</div>
 
-          <S.RBox>
-            <div>
-              <S.FlexBox>
-                <S.OriginalPrice>
-                  {isLoading ? (
-                    <DumText width="70px" height="30px" />
-                  ) : (
-                    <>
-                      ${' '}
-                      {calculateOriginalPrice({
-                        price: Number(ItemData?.price),
-                        discountPercentage: Number(ItemData?.discountPercentage),
-                      })}
-                    </>
-                  )}
-                </S.OriginalPrice>
-                <S.DiscountPercentage>
-                  {isLoading ? (
-                    <DumText width="50px" height="15px" />
-                  ) : (
-                    <> -{ItemData?.discountPercentage}</>
-                  )}
-                  %
-                </S.DiscountPercentage>
-              </S.FlexBox>
-              <S.Price>
-                ${isLoading ? <DumText width="100px" height="20px" /> : <>{ItemData?.price}</>}
-              </S.Price>
-              <S.FlexBox>
-                <S.Tt>
-                  <S.Text>재고:</S.Text>{' '}
-                  {isLoading ? <DumText width="50px" height="20px" /> : <>{ItemData?.stock}</>}
-                </S.Tt>
-                <S.Tt>
-                  <S.Text>상태:</S.Text>{' '}
-                  {isLoading ? (
-                    <DumText width="50px" height="20px" />
-                  ) : (
-                    <>{ItemData?.availabilityStatus}</>
-                  )}
-                </S.Tt>
-              </S.FlexBox>
-              <S.Tt>
-                <S.Text>평점:</S.Text>⭐️{' '}
-                {isLoading ? <DumText width="50px" height="20px" /> : <>{ItemData?.rating}</>}
-              </S.Tt>
+        <div className="flex items-center gap-3 text-sm text-gray-600">
+          <div>카테고리: {product.category}</div>
+          <div>평점: {product.rating}</div>
+        </div>
 
-              <S.Description>
-                {' '}
-                {isLoading ? <DumText width="550px" height="60px" /> : <>{ItemData?.description}</>}
-              </S.Description>
-              <S.Tt>
-                크기: W:{' '}
-                {isLoading ? (
-                  <DumText width="50px" height="10px" />
-                ) : (
-                  <>{ItemData?.dimensions?.width}</>
-                )}{' '}
-                x H:{' '}
-                {isLoading ? (
-                  <DumText width="50px" height="10px" />
-                ) : (
-                  <>{ItemData?.dimensions?.height}</>
-                )}{' '}
-                x D:{' '}
-                {isLoading ? (
-                  <DumText width="50px" height="10px" />
-                ) : (
-                  <>{ItemData?.dimensions?.depth}</>
-                )}
-              </S.Tt>
-              <S.Tt>
-                무게: {isLoading ? <DumText width="30px" height="15px" /> : <>{ItemData?.weight}</>}
-                kg
-              </S.Tt>
-              <S.Tt>
-                배송정보:{' '}
-                {isLoading ? (
-                  <DumText width="100px" height="15px" />
-                ) : (
-                  <>{ItemData?.shippingInformation}</>
-                )}
-              </S.Tt>
-              <S.Tt>
-                반품정보:{' '}
-                {isLoading ? (
-                  <DumText width="100px" height="15px" />
-                ) : (
-                  <>{ItemData?.returnPolicy}</>
-                )}
-              </S.Tt>
-              <S.Tt>
-                보증정보:{' '}
-                {isLoading ? (
-                  <DumText width="100px" height="15px" />
-                ) : (
-                  <>{ItemData?.warrantyInformation}</>
-                )}
-              </S.Tt>
-            </div>
-            <S.FlexBox>
-              <S.CartBt>장바구니 담기</S.CartBt>
-            </S.FlexBox>
-          </S.RBox>
-        </S.ContentBox>
-      </S.MainBox>
-    </S.Wrapper>
+        <div className="flex items-end gap-3">
+          <div className="text-3xl font-bold">$ {product.price}</div>
+          <div className="text-sm text-gray-600">할인율 {product.discountPercentage}%</div>
+        </div>
+
+        <div className="mt-2 text-sm leading-6 text-gray-700">{product.description}</div>
+      </div>
+    </div>
   );
 };
 

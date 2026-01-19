@@ -1,7 +1,5 @@
 import styled from '@emotion/styled';
-import { Suspense } from 'react';
 
-import SkeletonProductItemDetail from '@/pages/Explore/ui/ProductDetail/SkeletonProductItemDetail';
 import ProductItemDetail from '@/pages/Explore/ui/ProductDetail/ui/ProductItemDetail';
 import ProductGrid from '@/shared/ui/ProductGrid';
 
@@ -14,12 +12,10 @@ const SideItem = styled.div`
 
 const ProductDetail = () => {
   return (
-    <Suspense fallback={<SkeletonProductItemDetail />}>
-      <SideItem>
-        <ProductItemDetail />
-        <ProductGrid />
-      </SideItem>
-    </Suspense>
+    <SideItem>
+      <ProductItemDetail />
+      <ProductGrid />
+    </SideItem>
   );
 };
 
