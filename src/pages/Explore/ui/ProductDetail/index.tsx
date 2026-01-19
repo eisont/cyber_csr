@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { RelatedProducts } from '@/pages/Explore/ui/ProductDetail/ui/RelateProducts';
+import { RelatedProducts } from '@/pages/Explore/ui/ProductDetail/ui/RelatedProducts';
 import { SERVICE_URLS } from '@/shared/api/endpoints';
 import { QUERY_KEYS } from '@/shared/query/key';
 import { useFetchQuery } from '@/shared/query/useFetchQuery';
