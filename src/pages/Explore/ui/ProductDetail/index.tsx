@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
+import { RelatedProducts } from '@/pages/Explore/ui/ProductDetail/ui/RelateProducts';
 import { SERVICE_URLS } from '@/shared/api/endpoints';
 import { QUERY_KEYS } from '@/shared/query/key';
 import { useFetchQuery } from '@/shared/query/useFetchQuery';
@@ -67,33 +68,37 @@ const ProductDetail = () => {
     );
   }
   return (
-    <div className="w-full flex flex-col items-center">
-      <div className="flex gap-6 p-4">
-        <div className="w-[320px] shrink-0 rounded-lg bg-[#f6f6f6] p-4">
-          <img
-            src={product.thumbnail}
-            alt={product.title}
-            className="h-70 w-full rounded-md object-cover"
-          />
-        </div>
-
-        <div className="flex flex-1 flex-col gap-3">
-          <div className="text-2xl font-semibold">{product.title}</div>
-
-          <div className="flex items-center gap-3 text-sm text-gray-600">
-            <div>카테고리: {product.category}</div>
-            <div>평점: {product.rating}</div>
+    <>
+      <div className="w-full flex flex-col">
+        <div className="flex gap-6 p-4">
+          <div className="w-[320px] shrink-0 rounded-lg bg-[#f6f6f6] p-4">
+            <img
+              src={product.thumbnail}
+              alt={product.title}
+              className="h-70 w-full rounded-md object-cover"
+            />
           </div>
 
-          <div className="flex items-end gap-3">
-            <div className="text-3xl font-bold">$ {product.price}</div>
-            <div className="text-sm text-gray-600">할인율 {product.discountPercentage}%</div>
-          </div>
+          <div className="flex flex-1 flex-col gap-3">
+            <div className="text-2xl font-semibold">{product.title}</div>
 
-          <div className="mt-2 text-sm leading-6 text-gray-700">{product.description}</div>
+            <div className="flex items-center gap-3 text-sm text-gray-600">
+              <div>카테고리: {product.category}</div>
+              <div>평점: {product.rating}</div>
+            </div>
+
+            <div className="flex items-end gap-3">
+              <div className="text-3xl font-bold">$ {product.price}</div>
+              <div className="text-sm text-gray-600">할인율 {product.discountPercentage}%</div>
+            </div>
+
+            <div className="mt-2 text-sm leading-6 text-gray-700">{product.description}</div>
+          </div>
         </div>
       </div>
-    </div>
+
+      <RelatedProducts category={product.category} currentProductId={productId} />
+    </>
   );
 };
 
