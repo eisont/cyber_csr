@@ -19,13 +19,14 @@ import { RootState } from '@/app/store';
 import Breadcrumb from '@/pages/Explore/ui/Breadcrumb';
 import CategorySidebar from '@/pages/Explore/ui/CategorySidebar';
 import ProductsBox from '@/pages/Explore/ui/ProductsBox';
+import { RecentlyViewedProducts } from '@/pages/Explore/ui/RecentlyViewedProducts';
 import Recipes from '@/pages/Recipes';
 import { axiosInstance } from '@/shared/api';
 import { SERVICE_URLS } from '@/shared/api/endpoints';
 import { useDebouncedValue } from '@/shared/lib/useDebouncedValue';
 import { QUERY_KEYS } from '@/shared/query/key';
 import { useFetchQuery } from '@/shared/query/useFetchQuery';
-import { ProductsListResponse, RecipesType } from '@/shared/types/response';
+import type { ProductsListResponse, RecipesType } from '@/shared/types/response';
 import { EmptyState, ErrorState, Pagination, SkeletonBox } from '@/shared/ui';
 
 /** URL 파라미터를 안전하게 number로 파싱하기 위한 유틸(숫자 아닌 값이 들어오면 기본값 사용) */
@@ -277,6 +278,8 @@ const Explore = () => {
     <div className="flex justify-center">
       <div className="w-280">
         <Breadcrumb />
+
+        <RecentlyViewedProducts maxVisible={6} />
 
         {!params.id ? (
           <div className="flex justify-between">

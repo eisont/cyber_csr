@@ -1,11 +1,12 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { RelatedProducts } from '@/pages/Explore/ui/ProductDetail/ui/RelateProducts';
+import { RelatedProducts } from '@/pages/Explore/ui/ProductDetail/ui/RelatedProducts';
 import { SERVICE_URLS } from '@/shared/api/endpoints';
+import { addRecentlyViewedProduct } from '@/shared/lib/recentlyViewed';
 import { QUERY_KEYS } from '@/shared/query/key';
 import { useFetchQuery } from '@/shared/query/useFetchQuery';
-import { Product } from '@/shared/types/response';
+import type { Product } from '@/shared/types/response';
 import { EmptyState, ErrorState, SkeletonBox } from '@/shared/ui';
 
 /**
@@ -36,6 +37,15 @@ const ProductDetail = () => {
     enabled: Boolean(productId),
   });
 
+  /**
+   * 만든 이유
+   * - 상품 상세 데이터를 성공적으로 불러온 시점에 최근 본 상품 목록(sessionStorage)에 기록한다.
+   * - 중복 제거 + 최신 우선 정책을 addRecentlyViewedProduct에서 관리한다.
+   */
+  useEffect(() => {
+    if (!product) return;
+    addRecentlyViewedProduct(product, 20);
+  }, [product]);
   if (!productId) {
     return <EmptyState title="잘못된 상품 경로입니다." description="상품 ID를 다시 확인해보자." />;
   }
@@ -67,6 +77,7 @@ const ProductDetail = () => {
       />
     );
   }
+
   return (
     <>
       <div className="w-full flex flex-col">

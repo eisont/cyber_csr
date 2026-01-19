@@ -8,7 +8,7 @@
 import { SERVICE_URLS } from '@/shared/api/endpoints';
 import { QUERY_KEYS } from '@/shared/query/key';
 import { useFetchQuery } from '@/shared/query/useFetchQuery';
-import { Product, ProductsListResponse } from '@/shared/types/response';
+import type { Product, ProductsListResponse } from '@/shared/types/response';
 import { EmptyState, ErrorState, SkeletonBox } from '@/shared/ui';
 import ProductItem from '@/shared/ui/ProductItem';
 
