@@ -19,6 +19,7 @@ import { RootState } from '@/app/store';
 import Breadcrumb from '@/pages/Explore/ui/Breadcrumb';
 import CategorySidebar from '@/pages/Explore/ui/CategorySidebar';
 import ProductsBox from '@/pages/Explore/ui/ProductsBox';
+import { RecentlyViewedProducts } from '@/pages/Explore/ui/RecentlyViewedProducts';
 import Recipes from '@/pages/Recipes';
 import { axiosInstance } from '@/shared/api';
 import { SERVICE_URLS } from '@/shared/api/endpoints';
@@ -277,6 +278,8 @@ const Explore = () => {
     <div className="flex justify-center">
       <div className="w-280">
         <Breadcrumb />
+
+        <RecentlyViewedProducts maxVisible={6} />
 
         {!params.id ? (
           <div className="flex justify-between">
