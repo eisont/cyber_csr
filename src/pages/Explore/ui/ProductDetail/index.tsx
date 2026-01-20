@@ -1,6 +1,7 @@
 import { useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
+import { ProductGallery } from '@/pages/Explore/ui/ProductDetail/ui/ProductGallery';
 import { RelatedProducts } from '@/pages/Explore/ui/ProductDetail/ui/RelatedProducts';
 import { SERVICE_URLS } from '@/shared/api/endpoints';
 import { addRecentlyViewedProduct } from '@/shared/lib/recentlyViewed';
@@ -82,12 +83,8 @@ const ProductDetail = () => {
     <>
       <div className="w-full flex flex-col">
         <div className="flex gap-6 p-4">
-          <div className="w-[320px] shrink-0 rounded-lg bg-[#f6f6f6] p-4">
-            <img
-              src={product.thumbnail}
-              alt={product.title}
-              className="h-70 w-full rounded-md object-cover"
-            />
+          <div className="w-[320px] shrink-0">
+            <ProductGallery title={product.title} images={product.images} />
           </div>
 
           <div className="flex flex-1 flex-col gap-3">
