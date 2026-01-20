@@ -87,20 +87,58 @@ const ProductDetail = () => {
             <ProductGallery title={product.title} images={product.images} />
           </div>
 
-          <div className="flex flex-1 flex-col gap-3">
+          <div className="flex flex-1 flex-col">
             <div className="text-2xl font-semibold">{product.title}</div>
 
-            <div className="flex items-center gap-3 text-sm text-gray-600">
+            <section className="mb-2">
+              <div className="flex items-end gap-2">
+                <span className="text-2xl font-bold text-black">
+                  $ {product.price.toLocaleString()}
+                </span>
+                {product.discountPercentage > 0 && (
+                  <div className="mt-1 text-sm text-gray-400 line-through">
+                    $
+                    {Math.round(
+                      product.price / (1 - product.discountPercentage / 100),
+                    ).toLocaleString()}
+                  </div>
+                )}
+
+                {product.discountPercentage > 0 && (
+                  <span className="text-sm text-red-500">{product.discountPercentage}% 할인</span>
+                )}
+              </div>
+            </section>
+
+            <section className="mb-6 space-y-1 text-sm text-gray-600">
+              <div>⭐ 평점 {product.rating}</div>
               <div>카테고리: {product.category}</div>
-              <div>평점: {product.rating}</div>
-            </div>
+              <div>
+                재고: {''}
+                <span className={product.stock > 0 ? 'text-green-600' : 'text-red-500'}>
+                  {product.stock > 0 ? `${product.stock}개 남음` : '품절'}
+                </span>
+              </div>
+            </section>
 
-            <div className="flex items-end gap-3">
-              <div className="text-3xl font-bold">$ {product.price}</div>
-              <div className="text-sm text-gray-600">할인율 {product.discountPercentage}%</div>
-            </div>
+            <section className="mb-6 text-sm leading-relaxed text-gray-700">
+              {product.description}
+            </section>
 
-            <div className="mt-2 text-sm leading-6 text-gray-700">{product.description}</div>
+            <section className="flex gap-3">
+              <button
+                type="button"
+                className="flex-1 rounded-md border border-black px-4 py-2 text-sm cursor-pointer"
+              >
+                장바구니
+              </button>
+              <button
+                type="button"
+                className="flex-1 rounded-md bg-black px-4 py-2 text-sm text-white cursor-pointer"
+              >
+                구매하기
+              </button>
+            </section>
           </div>
         </div>
       </div>
