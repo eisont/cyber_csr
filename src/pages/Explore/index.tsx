@@ -260,6 +260,7 @@ const Explore = () => {
         return axiosInstance.get(nextUrl, { params: nextParams }).then((r) => r.data);
       },
     });
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [q, order, limit, skip, productId, canNext, isProductsLoading, isProductsError]);
 
