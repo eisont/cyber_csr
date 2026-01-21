@@ -1,12 +1,16 @@
+import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { productIdSlice } from '@/app/store';
+import { axiosInstance } from '@/shared/api';
+import { SERVICE_URLS } from '@/shared/api/endpoints';
 import { DumImg, DumText } from '@/shared/assets/styled/skeleton';
 import { AddToCartSVG, EmptyCartSVG } from '@/shared/assets/SVGicons';
 import { useIntersectionObserver } from '@/shared/hooks';
 import { calculateOriginalPrice } from '@/shared/lib';
+import { QUERY_KEYS } from '@/shared/query/key';
 import type { Product } from '@/shared/types/response';
 
 type ProductItemProps = Partial<Product> & {
@@ -17,8 +21,27 @@ const ProductItem = (pr: ProductItemProps) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
+  const queryClient = useQueryClient();
   const [toggle, setToggle] = useState(false);
   const { ref } = useIntersectionObserver();
+
+  /**
+   * 만든 이유
+   * - 사용자가 곧 상세로 이동할 가능성이 높아(hover/focus), 상세 데이터를 미리 받아 체감 로딩을 줄인다.
+   * - React Query 캐시를 그대로 쓰므로 실제 상세 진이 시 즉시 렌더 가능.
+   */
+  const prefetchDetail = (id: number) => {
+    if (!Number.isFinite(id) || id <= 0) return;
+
+    queryClient.prefetchQuery({
+      queryKey: QUERY_KEYS.products.detail(id),
+      queryFn: async () => {
+        const url = SERVICE_URLS.PRODUCTS.DETAIL(id);
+        return axiosInstance.get(url).then((r) => r.data);
+      },
+      staleTime: 1000 * 60 * 5,
+    });
+  };
 
   /**
    * 만든 이유
@@ -66,6 +89,7 @@ const ProductItem = (pr: ProductItemProps) => {
             <img
               className="h-40 delay-75 hover:scale-120 cursor-pointer"
               ref={ref}
+              loading="lazy"
               data-src={pr?.thumbnail}
               src={pr?.thumbnail}
               alt="thumbnail"
@@ -87,6 +111,8 @@ const ProductItem = (pr: ProductItemProps) => {
 
         <button
           type="button"
+          onMouseEnter={() => prefetchDetail(Number(pr.id))}
+          onFocus={() => prefetchDetail(Number(pr.id))}
           onClick={() => handleItemSelect(String(pr.category), Number(pr.id))}
           className="w-47 h-12 text-base rounded-lg bg-black text-white no-underline delay-100 flex justify-center items-center cursor-pointer hover:bg-gray-500"
         >

@@ -35,6 +35,7 @@ const ProductDetail = () => {
       ? QUERY_KEYS.products.detail(productId)
       : ['productId', 'detail', 'invalid'],
     url: productId ? SERVICE_URLS.PRODUCTS.DETAIL(productId) : '',
+    staleTime: 1000 * 60 * 5,
     enabled: Boolean(productId),
   });
 
