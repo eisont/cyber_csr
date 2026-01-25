@@ -10,6 +10,7 @@ import { DumImg, DumText } from '@/shared/assets/styled/skeleton';
 import { AddToCartSVG, EmptyCartSVG } from '@/shared/assets/SVGicons';
 import { useIntersectionObserver } from '@/shared/hooks';
 import { calculateOriginalPrice } from '@/shared/lib';
+import { addToCart } from '@/shared/lib/cart';
 import { QUERY_KEYS } from '@/shared/query/key';
 import type { Product } from '@/shared/types/response';
 
@@ -24,6 +25,20 @@ const ProductItem = (pr: ProductItemProps) => {
   const queryClient = useQueryClient();
   const [toggle, setToggle] = useState(false);
   const { ref } = useIntersectionObserver();
+
+  const handleAddToCart = () => {
+    if (!pr.id || !pr.price || !pr.stock) return;
+
+    addToCart({
+      id: Number(pr.id),
+      title: String(pr.title),
+      price: Number(pr.price),
+      thumbnail: String(pr.thumbnail),
+      stock: Number(pr.stock),
+    });
+
+    setToggle((prev) => !prev);
+  };
 
   /**
    * 만든 이유
@@ -69,7 +84,7 @@ const ProductItem = (pr: ProductItemProps) => {
           </div>
           <div
             className="flex justify-center items-center delay-30 cursor-pointer hover:scale-110"
-            onClick={() => setToggle((pr) => !pr)}
+            onClick={() => handleAddToCart()}
           >
             {toggle ? (
               <>{AddToCartSVG({ size: '24', color: '#292d32', insideColor: 'yellowgreen' })} </>
