@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import { ProductGallery } from '@/pages/Explore/ui/ProductDetail/ui/ProductGallery';
 import { RelatedProducts } from '@/pages/Explore/ui/ProductDetail/ui/RelatedProducts';
 import { SERVICE_URLS } from '@/shared/api/endpoints';
+import { addToCart } from '@/shared/lib/cart';
 import { addRecentlyViewedProduct } from '@/shared/lib/recentlyViewed';
 import { QUERY_KEYS } from '@/shared/query/key';
 import { useFetchQuery } from '@/shared/query/useFetchQuery';
@@ -23,6 +24,16 @@ const ProductDetail = () => {
     const n = Number(params.id);
     return Number.isFinite(n) ? n : null;
   }, [params.id]);
+
+  const handleAddToCart = () => {
+    addToCart({
+      id: Number(product?.id),
+      title: String(product?.title),
+      price: Number(product?.price),
+      thumbnail: String(product?.thumbnail),
+      stock: Number(product?.stock),
+    });
+  };
 
   const {
     data: product,
@@ -130,8 +141,9 @@ const ProductDetail = () => {
               <button
                 type="button"
                 className="flex-1 rounded-md border border-black px-4 py-2 text-sm cursor-pointer"
+                onClick={() => handleAddToCart()}
               >
-                장바구니
+                장바구니 담기
               </button>
               <button
                 type="button"
