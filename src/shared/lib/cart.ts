@@ -47,3 +47,44 @@ export const addToCart = (item: Omit<CartItem, 'quantity'>) => {
 
   setCartItems(next);
 };
+
+/**
+ * 만든 이유
+ * - 장바구니 수량 변경을 단일 함수로 통제한다.
+ * - 최소 1, 최대 stock 정책을 여기서 강제한다.
+ */
+export const updateCartQuantity = (id: number, nextQuantity: number) => {
+  const current = getCartItems();
+
+  const next = current.map((c) => {
+    if (c.id !== id) return c;
+
+    const clamped = Math.min(Math.max(nextQuantity, 1), c.stock);
+    return { ...c, quantity: clamped };
+  });
+
+  setCartItems(next);
+};
+
+/**
+ * 만든 이유
+ * - 장바구니에서 특정 상품을 제거한다.
+ */
+export const removeFromCart = (id: number) => {
+  const current = getCartItems();
+  setCartItems(current.filter((c) => c.id !== id));
+};
+
+/**
+ * 만든 이유
+ * - UI에서 합계를 매번 계산하지 않도록 도메인 유틸로 분리한다.
+ * - 총 수량/총 금액을 한 번에 계산해준다.
+ */
+export const getCartSummary = () => {
+  const items = getCartItems();
+
+  const totalQuantity = items.reduce((acc, cur) => acc + cur.quantity, 0);
+  const totalPrice = items.reduce((acc, cur) => acc + cur.price * cur.quantity, 0);
+
+  return { totalQuantity, totalPrice };
+};
