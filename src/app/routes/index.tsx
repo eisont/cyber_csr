@@ -1,5 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
 
+import Cart from '@/pages/Cart';
 import Explore from '@/pages/Explore';
 import ProductDetail from '@/pages/Explore/ui/ProductDetail';
 import Layout from '@/pages/Layout';
@@ -33,6 +34,7 @@ const AppRoutes = () => {
           <Route path=":id" element={<ProductDetail />} />
         </Route>
         <Route path="/recipes" element={<Explore />} />
+        <Route path="/cart" element={<Cart />} />
         <Route path="/search" element={<SearchProducts />} />
         <Route path="/selectUser" element={<SelectUser />} />
         <Route path={`/${userInfo?.username}`} element={<MyPage />} />
