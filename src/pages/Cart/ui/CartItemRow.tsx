@@ -12,8 +12,8 @@ type Props = { item: CartItem; onChange: () => void };
 const CartItemRow = ({ item, onChange }: Props) => {
   const isStockLimit = item.quantity >= item.stock;
   return (
-    <>
-      <div className="flex items-center gap-4 rounded-md border p-4">
+    <div className="flex flex-col  rounded-md border p-4 gap-2">
+      <div className="flex items-center">
         <img
           src={item.thumbnail}
           alt={item.title}
@@ -58,15 +58,17 @@ const CartItemRow = ({ item, onChange }: Props) => {
           type="button"
           className="ml-3 text-sm text-red-500 cursor-pointer"
           onClick={() => {
-            removeFromCart(item.id);
-            onChange();
+            if (confirm('정말 이 상품을 장바구니에서 삭제할까요?')) {
+              removeFromCart(item.id);
+              onChange();
+            }
           }}
         >
           삭제
         </button>
       </div>
       {isStockLimit && <div className="text-orange-500 text-xs">재고 한도에 도달했어요.</div>}
-    </>
+    </div>
   );
 };
 
