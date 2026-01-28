@@ -1,6 +1,6 @@
 import * as S from '@/pages/Recipes/ui/RecipesItem/RecipesItem.styled';
 import { useIntersectionObserver } from '@/shared/hooks';
-import type { RecipeItem } from '@/shared/types/response';
+import type { RecipeItem } from '@/shared/types';
 
 type RecipesItemType = Partial<RecipeItem> & {
   setSelectId: (e: number) => void;

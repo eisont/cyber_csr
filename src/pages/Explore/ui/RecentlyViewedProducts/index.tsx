@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import { getRecentlyViewedProducts } from '@/shared/lib/recentlyViewed';
-import type { Product } from '@/shared/types/response';
+import type { Product } from '@/shared/types';
 import ProductItem from '@/shared/ui/ProductItem';
 
 type RecentlyViewedProductsProps = {

@@ -1,5 +1,5 @@
 import * as S from '@/pages/Mypage/MyPage.styled';
-import type { AddressType } from '@/shared/types/response';
+import type { AddressType } from '@/shared/types';
 
 const AddressCard = ({
   address,

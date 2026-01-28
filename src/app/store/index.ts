@@ -1,6 +1,6 @@
 import { configureStore, createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
-import type { AuthLoginRequest, UserType } from '@/shared/types/response';
+import type { AuthLoginRequest, UserType } from '@/shared/types';
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

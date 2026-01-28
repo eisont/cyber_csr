@@ -10,7 +10,7 @@
  * - 그래서 ProductsBox는 "렌더 전용"으로 바꾸고, products 배열만 받아서 그린다.
  */
 
-import type { Product } from '@/shared/types/response';
+import type { Product } from '@/shared/types';
 import ProductItem from '@/shared/ui/ProductItem';
 
 type ProductsBoxProps = {

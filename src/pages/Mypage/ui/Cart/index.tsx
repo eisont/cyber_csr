@@ -4,7 +4,7 @@ import * as S from '@/pages/Mypage/MyPage.styled';
 import { SERVICE_URLS } from '@/shared/api/endpoints';
 import { QUERY_KEYS } from '@/shared/query/key';
 import { useFetchQuery } from '@/shared/query/useFetchQuery';
-import type { CartResponse } from '@/shared/types/response';
+import type { CartResponse } from '@/shared/types';
 
 const ItemRow = styled.div`
   display: grid;
