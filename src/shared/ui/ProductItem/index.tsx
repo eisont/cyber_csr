@@ -13,17 +13,19 @@ import { calculateOriginalPrice } from '@/shared/lib';
 import { addToCart } from '@/shared/lib/cart';
 import { QUERY_KEYS } from '@/shared/query/key';
 import type { Product } from '@/shared/types/response';
+import Toast from '@/shared/ui/Toast';
 
 type ProductItemProps = Partial<Product> & {
   isLoading?: boolean;
 };
 
 const ProductItem = (pr: ProductItemProps) => {
+  const [showToast, setShowToast] = useState(false);
+  const [toggle, setToggle] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
   const queryClient = useQueryClient();
-  const [toggle, setToggle] = useState(false);
   const { ref } = useIntersectionObserver();
 
   const handleAddToCart = () => {
@@ -37,7 +39,11 @@ const ProductItem = (pr: ProductItemProps) => {
       stock: Number(pr.stock),
     });
 
-    setToggle((prev) => !prev);
+    setToggle(true);
+
+    setTimeout(() => {
+      setShowToast(true);
+    }, 2000);
   };
 
   /**
@@ -134,6 +140,7 @@ const ProductItem = (pr: ProductItemProps) => {
           Detail
         </button>
       </div>
+      {showToast && <Toast message="장바구니에 담겼어요" />}
     </div>
   );
 };

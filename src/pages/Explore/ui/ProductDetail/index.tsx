@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { ProductGallery } from '@/pages/Explore/ui/ProductDetail/ui/ProductGallery';
@@ -10,6 +10,7 @@ import { QUERY_KEYS } from '@/shared/query/key';
 import { useFetchQuery } from '@/shared/query/useFetchQuery';
 import type { Product } from '@/shared/types/response';
 import { EmptyState, ErrorState, SkeletonBox } from '@/shared/ui';
+import Toast from '@/shared/ui/Toast';
 
 /**
  * 만든 이유
@@ -18,6 +19,7 @@ import { EmptyState, ErrorState, SkeletonBox } from '@/shared/ui';
  */
 const ProductDetail = () => {
   const params = useParams();
+  const [showToast, setShowToast] = useState(false);
 
   // params.id는 string | undefined 이므로 number로 안전변환
   const productId = useMemo(() => {
@@ -33,6 +35,10 @@ const ProductDetail = () => {
       thumbnail: String(product?.thumbnail),
       stock: Number(product?.stock),
     });
+
+    setTimeout(() => {
+      setShowToast(true);
+    }, 2000);
   };
 
   const {
@@ -155,6 +161,7 @@ const ProductDetail = () => {
           </div>
         </div>
       </div>
+      {showToast && <Toast message="장바구니에 담겼습니다." />}
 
       <RelatedProducts category={product.category} currentProductId={productId} />
     </>
