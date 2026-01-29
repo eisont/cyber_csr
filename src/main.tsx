@@ -15,6 +15,7 @@ import { QueryProvider, ScrollToTop } from '@/app/provider';
 
 import AppRouter from '@/app/routes';
 import { store } from '@/app/store';
+import ToastRender from '@/shared/ui/Toast/ToastRender';
 
 const container = document.getElementById('root');
 
@@ -29,6 +30,7 @@ createRoot(container).render(
         <ScrollToTop />
         <Provider store={store}>
           <AppRouter />
+          <ToastRender />
         </Provider>
       </BrowserRouter>
     </QueryProvider>

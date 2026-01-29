@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { ProductGallery } from '@/pages/Explore/ui/ProductDetail/ui/ProductGallery';
@@ -10,7 +10,7 @@ import { QUERY_KEYS } from '@/shared/query/key';
 import { useFetchQuery } from '@/shared/query/useFetchQuery';
 import type { Product } from '@/shared/types';
 import { EmptyState, ErrorState, SkeletonBox } from '@/shared/ui';
-import Toast from '@/shared/ui/Toast';
+import { useToast } from '@/shared/ui/Toast/useToast';
 
 /**
  * 만든 이유
@@ -18,8 +18,8 @@ import Toast from '@/shared/ui/Toast';
  * - Week2에서 만든 공통 상태 UI(Skeleton/Error/Empty)를 그대호 사용해 로딩/에러 UX를 일관되게 유지한다.
  */
 const ProductDetail = () => {
+  const { showToast } = useToast();
   const params = useParams();
-  const [showToast, setShowToast] = useState(false);
 
   // params.id는 string | undefined 이므로 number로 안전변환
   const productId = useMemo(() => {
@@ -36,9 +36,7 @@ const ProductDetail = () => {
       stock: Number(product?.stock),
     });
 
-    setTimeout(() => {
-      setShowToast(true);
-    }, 2000);
+    showToast('장바구니에 담겼어요.');
   };
 
   const {
@@ -161,7 +159,6 @@ const ProductDetail = () => {
           </div>
         </div>
       </div>
-      {showToast && <Toast message="장바구니에 담겼습니다." />}
 
       <RelatedProducts category={product.category} currentProductId={productId} />
     </>
