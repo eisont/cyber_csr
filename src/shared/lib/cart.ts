@@ -4,7 +4,7 @@
  * - sessionStorage를 단일 전입점으로 관리해 사이드 이펙트를 줄인다.
  */
 
-import { CartItem } from '@/shared/types/response';
+import type { CartItem } from '@/shared/types';
 
 const STORAGE_KEY = `cartItems`;
 

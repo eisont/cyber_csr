@@ -6,7 +6,7 @@ import RecipesItem from '@/pages/Recipes/ui/RecipesItem';
 import { SERVICE_URLS } from '@/shared/api/endpoints';
 import { QUERY_KEYS } from '@/shared/query/key';
 import { useFetchQuery } from '@/shared/query/useFetchQuery';
-import type { RecipesType } from '@/shared/types/response';
+import type { RecipesType } from '@/shared/types';
 
 const Recipes = () => {
   const [selectId, setSelectId] = useState<number | null>();

@@ -5,7 +5,7 @@
  */
 
 import { removeFromCart, updateCartQuantity } from '@/shared/lib/cart';
-import { CartItem } from '@/shared/types/response';
+import type { CartItem } from '@/shared/types';
 
 type Props = { item: CartItem; onChange: () => void };
 

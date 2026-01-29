@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { SERVICE_URLS } from '@/shared/api/endpoints';
 import { useLoginMutation } from '@/shared/hooks';
-import type { UserType } from '@/shared/types/response';
+import type { UserType } from '@/shared/types';
 
 const Wrapper = styled.div`
   display: inline-block;

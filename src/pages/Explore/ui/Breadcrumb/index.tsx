@@ -9,7 +9,7 @@ import { Arrow24pxSVG } from '@/shared/assets/SVGicons';
 import { kebabToTitleCase } from '@/shared/lib';
 import { QUERY_KEYS } from '@/shared/query/key';
 import { useFetchQuery } from '@/shared/query/useFetchQuery';
-import type { Product } from '@/shared/types/response';
+import type { Product } from '@/shared/types';
 
 const Breadcrumb = () => {
   const params = useParams();

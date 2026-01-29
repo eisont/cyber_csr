@@ -1,5 +1,5 @@
 import * as S from '@/pages/Mypage/MyPage.styled';
-import type { UserType } from '@/shared/types/response';
+import type { UserType } from '@/shared/types';
 
 const FinanceCard = ({ bank, crypto }: Partial<UserType>) => {
   const mask = (num = '') => num.replace(/\d(?=\d{4})/g, '*');

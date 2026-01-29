@@ -8,7 +8,7 @@ import { addToCart } from '@/shared/lib/cart';
 import { addRecentlyViewedProduct } from '@/shared/lib/recentlyViewed';
 import { QUERY_KEYS } from '@/shared/query/key';
 import { useFetchQuery } from '@/shared/query/useFetchQuery';
-import type { Product } from '@/shared/types/response';
+import type { Product } from '@/shared/types';
 import { EmptyState, ErrorState, SkeletonBox } from '@/shared/ui';
 import Toast from '@/shared/ui/Toast';
 

@@ -10,7 +10,7 @@ import { ExpandDownSVG } from '@/shared/assets/SVGicons';
 import { kebabToTitleCase } from '@/shared/lib';
 import { QUERY_KEYS } from '@/shared/query/key';
 import { useFetchQuery } from '@/shared/query/useFetchQuery';
-import type { CategoryListResponse } from '@/shared/types/response';
+import type { CategoryListResponse } from '@/shared/types';
 
 const CategorySidebar = () => {
   const productId = useSelector((state: RootState) => state.productId);

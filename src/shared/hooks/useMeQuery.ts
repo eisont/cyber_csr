@@ -2,7 +2,7 @@ import { getAccessToken } from '@/shared/api';
 import { SERVICE_URLS } from '@/shared/api/endpoints';
 import { QUERY_KEYS } from '@/shared/query/key';
 import { useFetchQuery } from '@/shared/query/useFetchQuery';
-import type { UserType } from '@/shared/types/response';
+import type { UserType } from '@/shared/types';
 
 const useMeQuery = () => {
   const token = getAccessToken();

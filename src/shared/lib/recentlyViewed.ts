@@ -4,7 +4,7 @@
  * - 중복 제거, 최대 개수 유지 같은 규칙을 단일 장소에서 관리한다.
  */
 
-import type { Product } from '@/shared/types/response';
+import type { Product } from '@/shared/types';
 
 const STORAGE_KEY = 'recentlyViewedProducts';
 

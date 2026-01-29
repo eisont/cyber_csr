@@ -12,7 +12,7 @@ import { useIntersectionObserver } from '@/shared/hooks';
 import { calculateOriginalPrice } from '@/shared/lib';
 import { addToCart } from '@/shared/lib/cart';
 import { QUERY_KEYS } from '@/shared/query/key';
-import type { Product } from '@/shared/types/response';
+import type { Product } from '@/shared/types';
 import Toast from '@/shared/ui/Toast';
 
 type ProductItemProps = Partial<Product> & {
